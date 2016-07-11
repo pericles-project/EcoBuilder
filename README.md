@@ -1,6 +1,7 @@
 # EcoBuilder
-Tool for the creation of Digital Ecosystem Models
+The EcoBuilder is a tool for the creation of Digital Ecosystem Models via Java API or via GUI. It is not released, yet.
 
+The Digital Ecosystem Model and the EcoBuilder will be released on Q4 2016.
 
 ## Links
 
