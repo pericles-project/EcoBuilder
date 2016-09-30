@@ -1,7 +1,15 @@
 # EcoBuilder
-The EcoBuilder is a tool for the creation of Digital Ecosystem Models via Java API or via GUI. It is not released, yet.
+The EcoBuilder is a tool for the creation of Digital Ecosystem Models via Java API or via GUI.
 
-The Digital Ecosystem Model and the EcoBuilder will be released on Q4 2016.
+The Digital Ecosystem Model and the first version of the EcoBuilder were released on 30th September 2016.
+
+We will add further information here, including a quick start guide and a developer documentation in the following week.
+
+We plan to publish two succeeding versions of the EcoBuilder this year. Version 1.1 will be published end of October before MEDES conference, where we will present a paper about the DEM and the EcoBuilder. Version 1.2 will be released end of November, just before the PERICLES final event in London. 
+
+Help us to improve the EcoBuilder, and create tickets ("Issues section"), if you have any suggestion for improvements, or if you find any bugs. We will try to process your feedback for the new versions.
+
+The EcoBuilder was developed on Linux. It was tested on Windows, but not very extensively. We have not tested it on Mac, yet.
 
 ## Links
 
