@@ -7,9 +7,13 @@ We will add further information here, including a quick start guide and a develo
 
 We plan to publish two succeeding versions of the EcoBuilder this year. Version 1.1 will be published end of October before MEDES conference, where we will present a paper about the DEM and the EcoBuilder. Version 1.2 will be released end of November, just before the PERICLES final event in London. 
 
+Please note that EcoBuilder projects saved using version 1.0 will probably not be loadable in the succeeding versions.
+
 Help us to improve the EcoBuilder, and create tickets ("Issues section"), if you have any suggestion for improvements, or if you find any bugs. We will try to process your feedback for the new versions.
 
 The EcoBuilder was developed on Linux. It was tested on Windows, but not very extensively. We have not tested it on Mac, yet.
+
+The execution of the EcoBuilder "jar" file requires installed Java 8.
 
 ## Links
 
