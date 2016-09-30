@@ -1,0 +1,80 @@
+/*
+ * Copyright 2016 Anna Eggers - Göttingen State and University Library
+ * The work has been developed in the PERICLES Project by Members of the PERICLES Consortium.
+ * This project has received funding from the European Union’s Seventh Framework Programme for research, technological
+ * development and demonstration under grant agreement no FP7- 601138 PERICLES.
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at:   http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied, including without
+ * limitation, any warranties or conditions of TITLE, NON-INFRINGEMENT, MERCHANTIBITLY, or FITNESS FOR A PARTICULAR
+ * PURPOSE. In no event and under no legal theory, whether in tort (including negligence), contract, or otherwise,
+ * unless required by applicable law or agreed to in writing, shall any Contributor be liable for damages, including
+ * any direct, indirect, special, incidental, or consequential damages of any character arising as a result of this
+ * License or out of the use or inability to use the Work.
+ * See the License for the specific language governing permissions and limitation under the License.
+ */
+package entities;
+
+import LRMv2.LRM_dynamic_schema;
+import LRMv2.LRM_static_schema;
+import models.AbstractModel;
+import models.CoreModel;
+import models.ScenarioModel;
+
+/**
+ * An agent in the ecosystem.
+ */
+public class EcosystemAgent extends EcosystemEntity {
+
+    public EcosystemAgent(ScenarioModel model, String identifier, Template template) {
+        super(model, identifier, template);
+    }
+
+    public EcosystemAgent(ScenarioModel model, String identifier) {
+        super(model, identifier, CoreModel.ecosystemAgent);
+    }
+
+    public void triggerEvent(EcosystemEvent event) {
+        event.addProperty(LRM_dynamic_schema.byAgent, this);
+    }
+
+    public void start(EcosystemActivity activity) {
+        activity.start(this);
+    }
+
+    public void stop(EcosystemActivity activity) {
+        activity.stop(this);
+    }
+
+    public void suspend(EcosystemActivity activity) {
+        activity.suspend(this);
+    }
+
+    public void resume(EcosystemActivity activity) {
+        activity.resume(this);
+    }
+
+    public void execute(EcosystemActivity activity) {
+        addProperty(LRM_dynamic_schema.executes, activity);
+        activity.addProperty(LRM_dynamic_schema.executedBy, this);
+    }
+
+    public static class AgentTemplate extends Template {
+        public AgentTemplate(CoreModel model) {
+            this(model, "Ecosystem Agent", "An agent in the ecosystem.", CoreModel.ecosystemEntity);
+        }
+
+        public AgentTemplate(AbstractModel model, String name, String comment, Template parent) {
+            super(model, name, parent);
+            addDescription(comment);
+            addSuperClass(LRM_static_schema.Agent);
+        }
+
+        @Override
+        public EcosystemAgent createEntity(ScenarioModel model, String ID) {
+            return new EcosystemAgent(model, ID);
+        }
+    }
+}
