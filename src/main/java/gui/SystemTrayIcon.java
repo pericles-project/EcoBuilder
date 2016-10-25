@@ -109,7 +109,7 @@ public final class SystemTrayIcon implements ActionListener {
         } else if (e.getSource() == generateDEM) {
             gui.saveDEM();
         } else if (e.getSource() == exitItem) {
-            gui.closeDialog();
+            gui.exit();
         }
     }
 }

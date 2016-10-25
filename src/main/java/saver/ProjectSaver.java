@@ -59,9 +59,6 @@ public class ProjectSaver extends AbstractSaver {
                 e.printStackTrace();
             }
         }
-        if (output.isFile()) {
-            ecoBuilder.saved = true;
-        }
         return output;
     }
 }

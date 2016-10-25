@@ -20,7 +20,6 @@ package gui;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextArea;
@@ -29,7 +28,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import saver.*;
 
 import java.awt.*;
@@ -62,8 +60,6 @@ public class EcoBuilder extends Application {
     private final SystemTrayIcon trayIcon;
     private final TextArea informationArea = new TextArea();
     private Text informationTitle = new Text("Information Area");
-    // Was the scenario saved? :
-    public boolean saved = false;
 
     // Utility classes for saving the models:
     public final DEMSaver demSaver;
@@ -113,7 +109,7 @@ public class EcoBuilder extends Application {
         loadWelcomeInformation();
         Scene scene = new Scene(vbox, 1280, 800);
         scene.getStylesheets().add(STYLESHEET);
-        primaryStage.setOnCloseRequest(event -> closeDialog());
+        primaryStage.setOnCloseRequest(event -> exit());
         primaryStage.setTitle("EcoBuilder - Create a Digital Ecosystem Model for your Scenario");
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -190,61 +186,11 @@ public class EcoBuilder extends Application {
     }
 
     /**
-     * Asks the user if she really wants to exit without saving.
-     */
-    public void closeDialog() {
-        if (!saved) {
-            if (scenarioPane.customRelations.size() > 0 || scenarioPane.customTemplates.size() > 0) {
-                new CloseDialog();
-            }
-            scenarioPane.getAllTemplates()
-                    .stream().filter(template -> template.childEntities.size() > 0).forEach(template -> {
-                new CloseDialog();
-            });
-        }
-        exit();
-    }
-
-    /**
      * Exits the application.
      */
-    private void exit() {
+    protected void exit() {
         SystemTray systemTray = SystemTray.getSystemTray();
         systemTray.remove(trayIcon.icon);
         Platform.exit();
-    }
-
-    /**
-     * A dialog to ask the user if the project should be saved before closing the application.
-     */
-    private class CloseDialog {
-        private Text title = new Text("Save project before exit?");
-        private Button no = new Button("No");
-        private Button yes = new Button("Yes");
-
-        private CloseDialog() {
-            GridPane dialog = new GridPane();
-            dialog.setId(DIALOG_ID);
-            GridPane.setConstraints(title, 0, 0, 3, 1);
-            GridPane.setConstraints(no, 1, 1, 1, 1);
-            GridPane.setConstraints(yes, 2, 1, 1, 1);
-            dialog.getChildren().addAll(title, no, yes);
-            Scene scene = new Scene(new VBox(dialog), 200, 100);
-            scene.getStylesheets().add(STYLESHEET);
-            Stage stage = new Stage();
-            stage.initStyle(StageStyle.UTILITY);
-            stage.setTitle("Close");
-            stage.setScene(scene);
-            stage.show();
-            no.setOnAction(e -> {
-                stage.hide();
-                exit();
-            });
-            yes.setOnAction(e -> {
-                projectSaver.save();
-                stage.hide();
-                exit();
-            });
-        }
     }
 }

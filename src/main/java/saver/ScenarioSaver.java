@@ -44,9 +44,6 @@ public class ScenarioSaver extends AbstractSaver {
         ScenarioModel scenario = new ScenarioModel(ecoBuilder.scenarioPane.toBeImported);
         scenario.createModelFromPanel(panel);
         File savedFile = saveModel(scenario.model);
-        if (savedFile != null && savedFile.isFile()) {
-            ecoBuilder.saved = true;
-        }
         return savedFile;
     }
 }
