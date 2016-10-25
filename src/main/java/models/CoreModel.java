@@ -43,10 +43,10 @@ public class CoreModel extends AbstractModel {
      * existing "instances". See also the {@link entities} package.
      */
     public static Template ecosystemEntity;
-    public static EcosystemActivity.ActivityTemplate ecosystemActivity;
     public static EcosystemAgent.AgentTemplate ecosystemAgent;
     public static PolicyTemplate policy;
     public static ProcessTemplate process;
+    public static EcosystemActivity.ActivityTemplate ecosystemActivity;
     public static DigitalObjectTemplate digitalObject;
     public static CommunityTemplate community;
     public static TechnicalServiceTemplate technicalService;
@@ -74,6 +74,7 @@ public class CoreModel extends AbstractModel {
     public static DEMRelation isImplementationOf;
     public static DEMRelation derivedFromPolicy;
     public static DEMRelation derivedFromObject;
+    public static DEMRelation storedOn;
 
     public CoreModel() {
         super("DEM-Core", "The core model of the Digital Ecosystem Model contains the five saver " +
@@ -87,10 +88,10 @@ public class CoreModel extends AbstractModel {
         ecosystemEntity = new Template(this, "Ecosystem Entity", null);
         ecosystemEntity.addDescription("This is an abstract template entity that holds some common relations that are " +
                 "inherited by all ecosystem entities.");
-        ecosystemActivity = new EcosystemActivity.ActivityTemplate(this);
         ecosystemAgent = new EcosystemAgent.AgentTemplate(this);
         policy = new PolicyTemplate(this);
         process = new ProcessTemplate(this);
+        ecosystemActivity = new EcosystemActivity.ActivityTemplate(this);
         digitalObject = new DigitalObjectTemplate(this);
         community = new CommunityTemplate(this);
         technicalService = new TechnicalServiceTemplate(this);
@@ -98,57 +99,59 @@ public class CoreModel extends AbstractModel {
 
     @Override
     public void createModelRelations() {
-        hasMandator = new RelationBuilder(this, "hasMandator")
+        hasMandator = new RelationBuilder(this, "hasMandator", policy)
                 .comment("The entity that mandates or generates the policy. The mandator could be also a reference " +
                         "to a legal requirement (in case that a policy is mandated by a legal requirement) or a directive.")
-                .domain(policy).range(ecosystemEntity).create();
-        ownedByCommunity = new RelationBuilder(this, "ownedByCommunity").comment("A community can own ecosystem entities.")
-                .domain(ecosystemEntity).range(community).create();
-        communityOwns = new RelationBuilder(this, "communityOwns").comment("A group of humans can own ecosystem entities.")
-                .domain(community).range(ecosystemEntity).inverse(ownedByCommunity).create();
-        managedBy = new RelationBuilder(this, "managedBy").comment("This entity is managed by a process.")
-                .domain(ecosystemEntity).range(community).create();
-        targetCommunity = new RelationBuilder(this, "targetCommunity")
+                .range(ecosystemEntity).create();
+        ownedByCommunity = new RelationBuilder(this, "ownedByCommunity", ecosystemEntity).comment("A community can own ecosystem entities.")
+                .range(community).create();
+        communityOwns = new RelationBuilder(this, "communityOwns", community).comment("A group of humans can own ecosystem entities.")
+                .range(ecosystemEntity).inverse(ownedByCommunity).create();
+        managedBy = new RelationBuilder(this, "managedBy", ecosystemEntity).comment("This entity is managed by a process.")
+                .range(community).create();
+        targetCommunity = new RelationBuilder(this, "targetCommunity", policy)
                 .comment("The community for which the policy has been designed.")
-                .domain(policy).range(community).create();
-        replaces = new RelationBuilder(this, "replaces")
+                .range(community).create();
+        replaces = new RelationBuilder(this, "replaces", policy)
                 .comment("Refers to an old policy which is replaced by this policy.")
-                .domain(policy).range(policy).create();
-        manages = new RelationBuilder(this, "manages").comment("A Process can manage all ecosystem entities.")
-                .domain(process).range(ecosystemEntity).inverse(managedBy).create();
-        runsOn = new RelationBuilder(this, "runsOn")
+                .range(policy).create();
+        manages = new RelationBuilder(this, "manages", process).comment("A Process can manage all ecosystem entities.")
+                .range(ecosystemEntity).inverse(managedBy).create();
+        runsOn = new RelationBuilder(this, "runsOn", process)
                 .comment("Relation to the technical service infrastructure on which the process is executed.")
-                .domain(process).range(technicalService).create();
-        function = new RelationBuilder(this, "function")
-                .comment("The function the process performs, or its purpose.").domain(process).create();
-        hasInput = new RelationBuilder(this, "hasInput").comment("The input of the process.").domain(process)
+                .range(technicalService).create();
+        function = new RelationBuilder(this, "function", process)
+                .comment("The function the process performs, or its purpose.").create();
+        hasInput = new RelationBuilder(this, "hasInput", process).comment("The input of the process.")
                 .range(ecosystemEntity).create();
-        hasOutput = new RelationBuilder(this, "hasOutput").comment("The output of the process.").domain(process)
+        hasOutput = new RelationBuilder(this, "hasOutput", process).comment("The output of the process.")
                 .range(ecosystemEntity).create();
-        hasLink = new RelationBuilder(this, "hasLink").comment("Link to the BPMN implementation.").domain(process)
+        hasLink = new RelationBuilder(this, "hasLink", process).comment("Link to the BPMN implementation.")
                 .create();
-        hasConflictIDAttribute = new RelationBuilder(this, "hasConflictIDAttribute")
-                .comment("Attribute for conflicting policies detection").domain(policy).create();
-        constrains = new RelationBuilder(this, "constrains")
+        hasConflictIDAttribute = new RelationBuilder(this, "hasConflictIDAttribute", policy)
+                .comment("Attribute for conflicting policies detection").create();
+        constrains = new RelationBuilder(this, "constrains", policy)
                 .comment("Refers to an ecosystem entity which is constrained by the policy.")
-                .domain(policy).range(ecosystemEntity).create();
-        replacedBy = new RelationBuilder(this, "replacedBy").comment("Refers to a policy which replaces this policy.")
-                .domain(policy).range(policy).inverse(replaces).create();
-        checksum = new RelationBuilder(this, "checksum").comment("The checksum of a digital object.")
-                .domain(digitalObject).create();
-        isEnforcedBy = new RelationBuilder(this, "isEnforcedBy")
-                .comment("A Process can be the implementation of a Policy.")
-                .domain(process).range(process).superRelation(LRM_static_schema.implementedBy).create();
-        isImplementationOf = new RelationBuilder(this, "isImplementationOf")
-                .comment("A Policy can be implemented by a Process.").domain(process).range(policy)
+                .range(ecosystemEntity).create();
+        replacedBy = new RelationBuilder(this, "replacedBy", policy).comment("Refers to a policy which replaces this policy.")
+                .domain(policy).inverse(replaces).create();
+        checksum = new RelationBuilder(this, "checksum", digitalObject).comment("The checksum of a digital object.")
+                .create();
+        isEnforcedBy = new RelationBuilder(this, "isEnforcedBy", process)
+                .comment("A Process can be the implementation of a Policy.").range(process).superRelation(LRM_static_schema.implementedBy).create();
+        isImplementationOf = new RelationBuilder(this, "isImplementationOf", process)
+                .comment("A Policy can be implemented by a Process.").range(policy)
                 .inverse(isEnforcedBy).create();
-        derivedFromPolicy = new RelationBuilder(this, "derivedFromPolicy")
+        derivedFromPolicy = new RelationBuilder(this, "derivedFromPolicy", policy)
                 .comment("A Policy can be derived from a higher level policy. It is therewith not a sub policy of " +
                         "the higher level policy, but a derivation of it.")
-                .domain(policy).range(policy).create();
-        derivedFromObject = new RelationBuilder(this, "derivedFromObject")
+                .range(policy).create();
+        derivedFromObject = new RelationBuilder(this, "derivedFromObject", digitalObject)
                 .comment("A Digital Object can be derived from another Digital Object. Then it is not a sub object, " +
                         "but a derivation.")
                 .domain(digitalObject).range(digitalObject).create();
+        storedOn = new RelationBuilder(this, "storedOn", digitalObject)
+                .comment("A Digital Object is stored on a Technical Service, e.g. repository or server.")
+                .range(technicalService).create();
     }
 }

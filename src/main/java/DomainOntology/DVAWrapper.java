@@ -20,6 +20,9 @@ package DomainOntology;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Resource;
+import com.sun.prism.j2d.paint.MultipleGradientPaint;
+import entities.EcosystemActivity;
+import entities.EcosystemAgent;
 import entities.Template;
 import models.*;
 import relations.DEMRelation;
@@ -310,8 +313,7 @@ public class DVAWrapper extends AbstractModel {
                 "https://dl.dropboxusercontent.com/u/27469926/dva_t.owl#AssistantCurator"), ProcessModel.humanAgent);
         AudioCodec = new Template(this, m_model.createResource(
                 "https://dl.dropboxusercontent.com/u/27469926/dva_t.owl#AudioCodec"), InfrastructureModel.softwareAgent);
-        AudioStream = new Template(this, m_model.createResource(
-                "https://dl.dropboxusercontent.com/u/27469926/dva_t.owl#AudioStream"), CoreModel.digitalObject);
+
         BitRate = new Template(this, m_model.createResource("https://dl.dropboxusercontent.com/u/27469926/dva_t.owl#BitRate"), CoreModel.ecosystemEntity);
         ChromaFormat = new Template(this, m_model.createResource("https://dl.dropboxusercontent.com/u/27469926/dva_t.owl#ChromaFormat"), CoreModel.ecosystemEntity);
         Codec = new Template(this, m_model.createResource(
@@ -340,7 +342,7 @@ public class DVAWrapper extends AbstractModel {
         DigitalVideo = new Template(this, m_model.createResource(
                 "https://dl.dropboxusercontent.com/u/27469926/dva_t.owl#DigitalVideo"), CoreModel.digitalObject);
         DigitalVideoArt = new Template(this, m_model.createResource(
-                "https://dl.dropboxusercontent.com/u/27469926/dva_t.owl#DigitalVideoArt"), CoreModel.digitalObject);
+                "https://dl.dropboxusercontent.com/u/27469926/dva_t.owl#DigitalVideoArt"), DigitalVideo);
         DisplayActivity = new Template(this, m_model.createResource(
                 "https://dl.dropboxusercontent.com/u/27469926/dva_t.owl#DisplayActivity"), ProcessModel.humanActivity);
         DisplayCost = new Template(this, m_model.createResource(
@@ -418,15 +420,17 @@ public class DVAWrapper extends AbstractModel {
                 "https://dl.dropboxusercontent.com/u/27469926/dva_t.owl#StorageDevice"), InfrastructureModel.infrastructureComponent);
         Stream = new Template(this, m_model.createResource(
                 "https://dl.dropboxusercontent.com/u/27469926/dva_t.owl#Stream"), CoreModel.digitalObject);
+        AudioStream = new Template(this, m_model.createResource(
+                "https://dl.dropboxusercontent.com/u/27469926/dva_t.owl#AudioStream"), Stream);
         SubtitleStream = new Template(this, m_model.createResource(
-                "https://dl.dropboxusercontent.com/u/27469926/dva_t.owl#SubtitleStream"), CoreModel.digitalObject);
+                "https://dl.dropboxusercontent.com/u/27469926/dva_t.owl#SubtitleStream"), Stream);
         SubtitleTextFormat = new Template(this, m_model.createResource("https://dl.dropboxusercontent.com/u/27469926/dva_t.owl#SubtitleTextFormat"), CoreModel.ecosystemEntity);
         Supplier = new Template(this, m_model.createResource(
                 "https://dl.dropboxusercontent.com/u/27469926/dva_t.owl#Supplier"), ProcessModel.humanAgent);
         Technician = new Template(this, m_model.createResource(
                 "https://dl.dropboxusercontent.com/u/27469926/dva_t.owl#Technician"), ProcessModel.humanAgent);
         VideoCodec = new Template(this, m_model.createResource(
-                "https://dl.dropboxusercontent.com/u/27469926/dva_t.owl#VideoCodec"), InfrastructureModel.softwareAgent);
+                "https://dl.dropboxusercontent.com/u/27469926/dva_t.owl#VideoCodec"), Codec);
         VideoCodecLevel = new Template(this, m_model.createResource("https://dl.dropboxusercontent.com/u/27469926/dva_t.owl#VideoCodecLevel"), CoreModel.ecosystemEntity);
         VideoCodecProfile = new Template(this, m_model.createResource("https://dl.dropboxusercontent.com/u/27469926/dva_t.owl#VideoCodecProfile"), CoreModel.ecosystemEntity);
         VideoDescription = new Template(this, m_model.createResource("https://dl.dropboxusercontent.com/u/27469926/dva_t.owl#VideoDescription"), CoreModel.ecosystemEntity);
@@ -435,83 +439,84 @@ public class DVAWrapper extends AbstractModel {
         VideoQualityMetric = new Template(this, m_model.createResource(
                 "https://dl.dropboxusercontent.com/u/27469926/dva_t.owl#VideoQualityMetric"), PolicyModel.qualityAssurance);
         VideoStream = new Template(this, m_model.createResource(
-                "https://dl.dropboxusercontent.com/u/27469926/dva_t.owl#VideoStream"), CoreModel.digitalObject);
+                "https://dl.dropboxusercontent.com/u/27469926/dva_t.owl#VideoStream"), DigitalVideo);
+        VideoStream.addSuperClass(Stream);
         WarningItem = new Template(this, m_model.createResource(
                 "https://dl.dropboxusercontent.com/u/27469926/dva_t.owl#WarningItem"), AnalysisModel.warning);
     }
 
     @Override
     public void createModelRelations() {
-        accessesResource = new RelationBuilder(this, "accessesResource").create();
-        acquiresResource = new RelationBuilder(this, "acquiresResource").create();
-        acquisitionActivityPerformedBy = new RelationBuilder(this, "acquisitionActivityPerformedBy").create();
-        acquisitionActivityPerformedByProvider = new RelationBuilder(this, "acquisitionActivityPerformedByProvider").create();
-        acquisitionActivityPerformedToReceiver = new RelationBuilder(this, "acquisitionActivityPerformedToReceiver").create();
-        activityLocation = new RelationBuilder(this, "activityLocation").create();
-        createsResource = new RelationBuilder(this, "createsResource").create();
-        destroysResource = new RelationBuilder(this, "destroysResource").create();
-        displaysResource = new RelationBuilder(this, "displaysResource").create();
-        documentsResource = new RelationBuilder(this, "documentsResource").create();
-        hasAnalogBroadcastStandard = new RelationBuilder(this, "hasAnalogBroadcastStandard").create();
-        hasAspectRatio = new RelationBuilder(this, "hasAspectRatio").create();
-        hasAudioCodec = new RelationBuilder(this, "hasAudioCodec").create();
-        hasAudioStream = new RelationBuilder(this, "hasAudioStream").create();
-        hasBitRate = new RelationBuilder(this, "hasBitRate").create();
-        hasChromaFormat = new RelationBuilder(this, "hasChromaFormat").create();
-        hasCodec = new RelationBuilder(this, "hasCodec").create();
-        hasCodingStandard = new RelationBuilder(this, "hasCodingStandard").create();
-        hasColourSpaceType = new RelationBuilder(this, "hasColourSpaceType").create();
-        hasCompressionType = new RelationBuilder(this, "hasCompressionType").create();
-        hasContainer = new RelationBuilder(this, "hasContainer").create();
-        hasCopyInput = new RelationBuilder(this, "hasCopyInput").create();
-        hasCopyOutput = new RelationBuilder(this, "hasCopyOutput").create();
-        hasDate = new RelationBuilder(this, "hasDate").create();
-        hasEmbeddingType = new RelationBuilder(this, "hasEmbeddingType").create();
-        hasFrameRate = new RelationBuilder(this, "hasFrameRate").create();
-        hasFrameSize = new RelationBuilder(this, "hasFrameSize").create();
-        hasPlaybackDuration = new RelationBuilder(this, "hasPlaybackDuration").create();
-        hasRangeType = new RelationBuilder(this, "hasRangeType").create();
-        hasSampleRate = new RelationBuilder(this, "hasSampleRate").create();
-        hasScanType = new RelationBuilder(this, "hasScanType").create();
-        hasSetOfStandards = new RelationBuilder(this, "hasSetOfStandards").create();
-        hasSize = new RelationBuilder(this, "hasSize").create();
-        hasStream = new RelationBuilder(this, "hasStream").create();
-        hasSubtitleStream = new RelationBuilder(this, "hasSubtitleStream").create();
-        hasSubtitleTextFormat = new RelationBuilder(this, "hasSubtitleTextFormat").create();
-        hasVideoCodec = new RelationBuilder(this, "hasVideoCodec").create();
-        hasVideoCodecLevel = new RelationBuilder(this, "hasVideoCodecLevel").create();
-        hasVideoCodecProfile = new RelationBuilder(this, "hasVideoCodecProfile").create();
-        hasVideoQualityMeasurement = new RelationBuilder(this, "hasVideoQualityMeasurement").create();
-        hasVideoQualityMetric = new RelationBuilder(this, "hasVideoQualityMetric").create();
-        hasVideoStream = new RelationBuilder(this, "hasVideoStream").create();
-        hasYUVSampleRange = new RelationBuilder(this, "hasYUVSampleRange").create();
-        isBorrowerInLoanActivity = new RelationBuilder(this, "isBorrowerInLoanActivity").create();
-        isCopyOf = new RelationBuilder(this, "isCopyOf").create();
-        isLenderInLoanActivity = new RelationBuilder(this, "isLenderInLoanActivity").create();
-        isProviderInAcquisitionActivity = new RelationBuilder(this, "isProviderInAcquisitionActivity").create();
-        isReceiverInAcquisitionActivity = new RelationBuilder(this, "isReceiverInAcquisitionActivity").create();
-        loanActivityPerformedBy = new RelationBuilder(this, "loanActivityPerformedBy").create();
-        loanActivityPerformedFromAgent = new RelationBuilder(this, "loanActivityPerformedFromAgent").create();
-        loanActivityPerformedToAgent = new RelationBuilder(this, "loanActivityPerformedToAgent").create();
-        loansResource = new RelationBuilder(this, "loansResource").create();
-        maintainsResource = new RelationBuilder(this, "maintainsResource").create();
-        migratesFromResource = new RelationBuilder(this, "migratesFromResource").create();
-        migratesToResource = new RelationBuilder(this, "migratesToResource").create();
-        performedBy = new RelationBuilder(this, "performedBy").create();
-        performs = new RelationBuilder(this, "performs").create();
-        performsAcquisitionActivity = new RelationBuilder(this, "performsAcquisitionActivity").create();
-        performsLoanActivity = new RelationBuilder(this, "performsLoanActivity").create();
-        storesResource = new RelationBuilder(this, "storesResource").create();
-        atTime = new RelationBuilder(this, "atTime").create();
-        hasDescription = new RelationBuilder(this, "hasDescription").create();
-        hasStatusFlag = new RelationBuilder(this, "hasStatusFlag").create();
-        hasUnit = new RelationBuilder(this, "hasUnit").create();
-        hasValue = new RelationBuilder(this, "hasValue").create();
-        hasVersion = new RelationBuilder(this, "hasVersion").create();
-        hasWarningText = new RelationBuilder(this, "hasWarningText").create();
-        includesAspectRatio = new RelationBuilder(this, "includesAspectRatio").create();
-        includesMetadata = new RelationBuilder(this, "includesMetadata").create();
-        value = new RelationBuilder(this, "value").create();
+        accessesResource = new RelationBuilder(this, "accessesResource", CoreModel.ecosystemAgent).domain(CoreModel.process).create();
+        acquiresResource = new RelationBuilder(this, "acquiresResource", CoreModel.ecosystemEntity).create();
+        acquisitionActivityPerformedBy = new RelationBuilder(this, "acquisitionActivityPerformedBy", CoreModel.process).domain(CoreModel.ecosystemAgent).create();
+        acquisitionActivityPerformedByProvider = new RelationBuilder(this, "acquisitionActivityPerformedByProvider", CoreModel.process).domain(CoreModel.ecosystemAgent).create();
+        acquisitionActivityPerformedToReceiver = new RelationBuilder(this, "acquisitionActivityPerformedToReceiver", CoreModel.process).domain(CoreModel.ecosystemAgent).create();
+        activityLocation = new RelationBuilder(this, "activityLocation", CoreModel.ecosystemActivity).create();
+        createsResource = new RelationBuilder(this, "createsResource", CoreModel.ecosystemAgent).domain(CoreModel.process).create();
+        destroysResource = new RelationBuilder(this, "destroysResource", CoreModel.ecosystemAgent).domain(CoreModel.process).create();
+        displaysResource = new RelationBuilder(this, "displaysResource", CoreModel.ecosystemEntity).create();
+        documentsResource = new RelationBuilder(this, "documentsResource", CoreModel.ecosystemEntity).create();
+        hasAnalogBroadcastStandard = new RelationBuilder(this, "hasAnalogBroadcastStandard", DigitalVideo).range(AnalogBroadcastStandard).create();
+        hasAspectRatio = new RelationBuilder(this, "hasAspectRatio", DigitalVideo).range(AspectRatio).create();
+        hasAudioCodec = new RelationBuilder(this, "hasAudioCodec", DigitalVideo).range(AudioCodec).create();
+        hasAudioStream = new RelationBuilder(this, "hasAudioStream", DigitalVideo).domain(VideoStream).range(AudioStream).create();
+        hasBitRate = new RelationBuilder(this, "hasBitRate", DigitalVideo).domain(AudioStream).range(BitRate).create();
+        hasChromaFormat = new RelationBuilder(this, "hasChromaFormat",DigitalVideo).range(ChromaFormat).create();
+        hasCodec = new RelationBuilder(this, "hasCodec",DigitalVideo).range(Codec).create();
+        hasCodingStandard = new RelationBuilder(this, "hasCodingStandard", DigitalVideo).range(CodingStandard).create();
+        hasColourSpaceType = new RelationBuilder(this, "hasColourSpaceType", DigitalVideo).range(ColourSpaceType).create();
+        hasCompressionType = new RelationBuilder(this, "hasCompressionType", DigitalVideo).range(CompressionType).create();
+        hasContainer = new RelationBuilder(this, "hasContainer", DigitalVideo).range(Container).create();
+        hasCopyInput = new RelationBuilder(this, "hasCopyInput", CoreModel.process).create();
+        hasCopyOutput = new RelationBuilder(this, "hasCopyOutput", CoreModel.process).create();
+        hasDate = new RelationBuilder(this, "hasDate", CoreModel.ecosystemEntity).create();
+        hasEmbeddingType = new RelationBuilder(this, "hasEmbeddingType", DigitalVideo).range(EmbeddingType).create();
+        hasFrameRate = new RelationBuilder(this, "hasFrameRate", DigitalVideo).range(FrameRate).create();
+        hasFrameSize = new RelationBuilder(this, "hasFrameSize",DigitalVideo).create();
+        hasPlaybackDuration = new RelationBuilder(this, "hasPlaybackDuration", DigitalVideo).create();
+        hasRangeType = new RelationBuilder(this, "hasRangeType", DigitalVideo).range(RangeType).create();
+        hasSampleRate = new RelationBuilder(this, "hasSampleRate", DigitalVideo).range(SampleRate).create();
+        hasScanType = new RelationBuilder(this, "hasScanType", DigitalVideo).range(ScanType).create();
+        hasSetOfStandards = new RelationBuilder(this, "hasSetOfStandards", DigitalVideo).range(SetOfStandards).create();
+        hasSize = new RelationBuilder(this, "hasSize", CoreModel.digitalObject).create();
+        hasStream = new RelationBuilder(this, "hasStream", DigitalVideo).range(Stream).create();
+        hasSubtitleStream = new RelationBuilder(this, "hasSubtitleStream", DigitalVideo).range(SubtitleStream).create();
+        hasSubtitleTextFormat = new RelationBuilder(this, "hasSubtitleTextFormat", SubtitleStream).range(SubtitleTextFormat).create();
+        hasVideoCodec = new RelationBuilder(this, "hasVideoCodec", DigitalVideo).range(VideoCodec).create();
+        hasVideoCodecLevel = new RelationBuilder(this, "hasVideoCodecLevel", VideoCodec).range(VideoCodecLevel).create();
+        hasVideoCodecProfile = new RelationBuilder(this, "hasVideoCodecProfile",VideoCodec).range(VideoCodecProfile).create();
+        hasVideoQualityMeasurement = new RelationBuilder(this, "hasVideoQualityMeasurement",DigitalVideo).range(VideoQualityMeasurement).create();
+        hasVideoQualityMetric = new RelationBuilder(this, "hasVideoQualityMetric", DigitalVideo).range(VideoQualityMetric).create();
+        hasVideoStream = new RelationBuilder(this, "hasVideoStream", DigitalVideo).range(VideoStream).create();
+        hasYUVSampleRange = new RelationBuilder(this, "hasYUVSampleRange",DigitalVideo).range(SampleRate).create();
+        isBorrowerInLoanActivity = new RelationBuilder(this, "isBorrowerInLoanActivity",CoreModel.ecosystemEntity).range(LoanActivity).create();
+        isCopyOf = new RelationBuilder(this, "isCopyOf", DigitalVideo).range(DigitalVideo).create();
+        isLenderInLoanActivity = new RelationBuilder(this, "isLenderInLoanActivity", CoreModel.ecosystemEntity).range(LoanActivity).create();
+        isProviderInAcquisitionActivity = new RelationBuilder(this, "isProviderInAcquisitionActivity", CoreModel.ecosystemEntity).range(AcquisitionActivity).create();
+        isReceiverInAcquisitionActivity = new RelationBuilder(this, "isReceiverInAcquisitionActivity", CoreModel.ecosystemEntity).range(AcquisitionActivity).create();
+        loanActivityPerformedBy = new RelationBuilder(this, "loanActivityPerformedBy", LoanActivity).range(CoreModel.ecosystemAgent).create();
+        loanActivityPerformedFromAgent = new RelationBuilder(this, "loanActivityPerformedFromAgent", LoanActivity).range(CoreModel.ecosystemAgent).create();
+        loanActivityPerformedToAgent = new RelationBuilder(this, "loanActivityPerformedToAgent", LoanActivity).range(CoreModel.ecosystemAgent).create();
+        loansResource = new RelationBuilder(this, "loansResource", CoreModel.ecosystemEntity).create();
+        maintainsResource = new RelationBuilder(this, "maintainsResource", CoreModel.ecosystemAgent).domain(CoreModel.process).create();
+        migratesFromResource = new RelationBuilder(this, "migratesFromResource", CoreModel.ecosystemEntity).create();
+        migratesToResource = new RelationBuilder(this, "migratesToResource", CoreModel.ecosystemEntity).create();
+        performedBy = new RelationBuilder(this, "performedBy", CoreModel.ecosystemActivity).range(CoreModel.ecosystemAgent).create();
+        performs = new RelationBuilder(this, "performs", CoreModel.ecosystemAgent).range(CoreModel.ecosystemActivity).create();
+        performsAcquisitionActivity = new RelationBuilder(this, "performsAcquisitionActivity", CoreModel.ecosystemAgent).range(AcquisitionActivity).create();
+        performsLoanActivity = new RelationBuilder(this, "performsLoanActivity", CoreModel.ecosystemAgent).range(LoanActivity).create();
+        storesResource = new RelationBuilder(this, "storesResource", CoreModel.process).create();
+        atTime = new RelationBuilder(this, "atTime", CoreModel.ecosystemEntity).create();
+        hasDescription = new RelationBuilder(this, "hasDescription", CoreModel.ecosystemEntity).create();
+        hasStatusFlag = new RelationBuilder(this, "hasStatusFlag", CoreModel.ecosystemEntity).create();
+        hasUnit = new RelationBuilder(this, "hasUnit", CoreModel.ecosystemEntity).create();
+        hasValue = new RelationBuilder(this, "hasValue", CoreModel.ecosystemEntity).create();
+        hasVersion = new RelationBuilder(this, "hasVersion", CoreModel.ecosystemEntity).create();
+        hasWarningText = new RelationBuilder(this, "hasWarningText", DigitalVideo).create();
+        includesAspectRatio = new RelationBuilder(this, "includesAspectRatio", DigitalVideo).create();
+        includesMetadata = new RelationBuilder(this, "includesMetadata", Container).create();
+        value = new RelationBuilder(this, "value", CoreModel.ecosystemEntity).create();
 
         for (Relation relation : this.relations) {
             if (relation instanceof DEMRelation) {

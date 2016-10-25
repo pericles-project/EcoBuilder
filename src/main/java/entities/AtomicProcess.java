@@ -22,45 +22,23 @@ import models.ProcessModel;
 import models.ScenarioModel;
 
 /**
- * An input- or output slot is linked to a process and defines which entity types can be passed as input or output of the process.
+ * An atomic Process is a process which cannot have sub-processes.
  */
-public class Slot extends EcosystemEntity {
+public class AtomicProcess extends Process {
 
-    public Slot(ScenarioModel scenario, String identifier) {
-        super(scenario, identifier, ProcessModel.slot);
+    public AtomicProcess(ScenarioModel scenario, String identifier) {
+        super(scenario, identifier, ProcessModel.atomicProcess);
     }
 
-    public void setSlotTemplate(Template template) {
-        addProperty(ProcessModel.slotType, template);
-    }
-
-    public void isInputSlotOf(Process process) {
-        process.hasInputSlot(this);
-    }
-
-    public void isOutputSlotOf(Process process) {
-        process.hasOutputSlot(this);
-    }
-
-    public void passesOutputTo(Slot slot) {
-        addProperty(ProcessModel.passesOutputTo, slot);
-        slot.addProperty(ProcessModel.receivesInputFrom, slot);
-    }
-
-    public void receivesInputFrom(Slot slot) {
-        slot.passesOutputTo(this);
-    }
-
-    public static class SlotTemplate extends Template {
-        public SlotTemplate(ProcessModel processModel) {
-            super(processModel, "Slot", CoreModel.ecosystemEntity);
-            addDescription("An input- or output slot is linked to a process and defines which entity types " +
-                    "can be passed as input or output of the process.");
+    public static class AtomicProcessTemplate extends ProcessTemplate {
+        public AtomicProcessTemplate(ProcessModel changeModel) {
+            super(changeModel, "Atomic Process",
+                    "An atomic Process is a process which cannot have sub-processes.", CoreModel.process);
         }
 
         @Override
-        public Slot createEntity(ScenarioModel model, String ID) {
-            return new Slot(model, ID);
+        public AtomicProcess createEntity(ScenarioModel model, String ID) {
+            return new AtomicProcess(model, ID);
         }
     }
 }

@@ -64,10 +64,12 @@ public class RelationBuilder {
      *
      * @param model Model to which the relation belongs
      * @param name  name of the relation
+     *              @param domain One domain at least the EcosystemEntity is required.
      */
-    public RelationBuilder(AbstractModel model, String name) {
+    public RelationBuilder(AbstractModel model, String name, Resource domain) {
         this.model = model;
         this.name = name;
+        domains.add(domain);
         OntProperty property = model.model.getOntProperty(model.namespace + AbstractModel.sanitizeName(name));
         if (property != null) {
             domains.add(property.getDomain());

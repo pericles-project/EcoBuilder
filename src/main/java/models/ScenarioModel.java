@@ -165,7 +165,18 @@ public class ScenarioModel extends AbstractModel {
     }
 
     private void createCustomRelation(CustomRelation customRelation) {
-        RelationBuilder builder = new RelationBuilder(this, customRelation.name)
+        Template firstDomain = null;
+        for (TemplateView domain : customRelation.getParentDomains()) {
+            if (domain instanceof DEMTemplateView) {
+                firstDomain = ((DEMTemplateView) domain).template;
+                break;
+            }
+        }
+        if(firstDomain == null){
+            return;
+        }
+        customRelation.getParentDomains().remove(firstDomain);
+        RelationBuilder builder = new RelationBuilder(this, customRelation.name, firstDomain)
                 .comment(customRelation.description);
         for (TemplateView domain : customRelation.getParentDomains()) {
             //At the moment a custom relation can only have DEMTemplateViews as domain and range. (Not custom templates)

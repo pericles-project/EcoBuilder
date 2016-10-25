@@ -94,63 +94,61 @@ public class PolicyModel extends AbstractModel {
 
     @Override
     public void createModelRelations() {
-        hasPolicyStatement = new RelationBuilder(this, "hasPolicyStatement").comment("Refers to the policy statement.")
-                .domain(CoreModel.policy).range(policyStatement).superRelation(LRM_static_schema.describedBy).create();
-        hasPolicyType = new RelationBuilder(this, "hasPolicyType").comment("Links a Policy entity to a Policy Type.")
-                .domain(CoreModel.policy).superRelation(LRM_static_schema.describedBy).create();
-        hasPolicyLevel = new RelationBuilder(this, "hasPolicyLevel").comment("Links a Policy entity to a Policy Level.")
-                .domain(CoreModel.policy).range(policyLevel).superRelation(LRM_static_schema.describedBy).create();
-        hasValidationStatus = new RelationBuilder(this, "hasValidationStatus")
-                .comment("Links a Policy entity to a Validation Status.").domain(CoreModel.policy)
+        hasPolicyStatement = new RelationBuilder(this, "hasPolicyStatement", CoreModel.policy).comment("Refers to the policy statement.")
+                .range(policyStatement).superRelation(LRM_static_schema.describedBy).create();
+        hasPolicyType = new RelationBuilder(this, "hasPolicyType", CoreModel.policy).comment("Links a Policy entity to a Policy Type.")
                 .superRelation(LRM_static_schema.describedBy).create();
-        hasQA = new RelationBuilder(this, "addQACriterion")
-                .comment("Refers to a quality assurance criterion for a policy.").domain(CoreModel.policy)
+        hasPolicyLevel = new RelationBuilder(this, "hasPolicyLevel", CoreModel.policy).comment("Links a Policy entity to a Policy Level.")
+                .range(policyLevel).superRelation(LRM_static_schema.describedBy).create();
+        hasValidationStatus = new RelationBuilder(this, "hasValidationStatus", CoreModel.policy)
+                .comment("Links a Policy entity to a Validation Status.")
+                .superRelation(LRM_static_schema.describedBy).create();
+        hasQA = new RelationBuilder(this, "addQACriterion", CoreModel.policy)
+                .comment("Refers to a quality assurance criterion for a policy.")
                 .range(qualityAssurance).create();
-        classification = new RelationBuilder(this, "classification")
-                .comment("Type of policy (TBC), such as: data management, format, access, ...")
-                .domain(CoreModel.policy).create();
-        ensuresQACriterion = new RelationBuilder(this, "ensuresQACriterion")
+        classification = new RelationBuilder(this, "classification", CoreModel.policy)
+                .comment("Type of policy (TBC), such as: data management, format, access, ...").create();
+        ensuresQACriterion = new RelationBuilder(this, "ensuresQACriterion", CoreModel.process)
                 .comment("Links to a QA criterion, which is ensured by this process.")
-                .domain(CoreModel.process).range(qualityAssurance).create();
-        hasProcessSequence = new RelationBuilder(this, "hasProcessSequence")
+                .range(qualityAssurance).create();
+        hasProcessSequence = new RelationBuilder(this, "hasProcessSequence", CoreModel.process)
                 .comment("Ordered sequence of processes which implement a policy").domain(aggregatedPolicy)
-                .domain(CoreModel.process).create();
+                .create();
         // TODO: allow RDF.Seq as range & right handling at the GUI
         hasProcessSequence.addRange(RDF.Seq);
-        hasLevel = new RelationBuilder(this, "complianceLevel").comment("Describes the level of compliance")
-                .domain(requirementLevel).superRelation(LRM_static_schema.describedBy).create();
-        hasRequirementLevel = new RelationBuilder(this, "hasRequirementLevel")
-                .comment("The Policy has a requirement level.").domain(CoreModel.policy)
+        hasLevel = new RelationBuilder(this, "complianceLevel", requirementLevel).comment("Describes the level of compliance")
+                .superRelation(LRM_static_schema.describedBy).create();
+        hasRequirementLevel = new RelationBuilder(this, "hasRequirementLevel", CoreModel.policy)
+                .comment("The Policy has a requirement level.")
                 .range(requirementLevel).create();
-        format = new RelationBuilder(this, "format")
+        format = new RelationBuilder(this, "format", policyStatement)
                 .comment("Formal format: if so what language used; or non formal (free text)")
-                .domain(policyStatement).create();
-        language = new RelationBuilder(this, "language")
-                .comment("The language used for the criteria definition (natural, ReAL, SWRL, etc.)")
-                .domain(policyStatement).create();
-        hasImplementationState = new RelationBuilder(this, "hasImplementationState")
+                .create();
+        language = new RelationBuilder(this, "language", policyStatement)
+                .comment("The language used for the criteria definition (natural, ReAL, SWRL, etc.)").create();
+        hasImplementationState = new RelationBuilder(this, "hasImplementationState", CoreModel.policy)
                 .comment("Current state of the policy: How well the policy is currently implemented.")
-                .domain(CoreModel.policy).range(implementationState).create();
-        hasMetaPolicy = new RelationBuilder(this, "hasMetaPolicy").comment("The policy has a meta policy.")
-                .domain(CoreModel.policy).range(metaPolicy).create();
-        hasRisk = new RelationBuilder(this, "hasRisk").comment("The policy has a risk.").domain(CoreModel.policy)
+                .range(implementationState).create();
+        hasMetaPolicy = new RelationBuilder(this, "hasMetaPolicy", CoreModel.policy).comment("The policy has a meta policy.")
+                .range(metaPolicy).create();
+        hasRisk = new RelationBuilder(this, "hasRisk", CoreModel.policy).comment("The policy has a risk.")
                 .range(risk).create();
-        validFrom = new RelationBuilder(this, "validFrom").comment("Defines a start date of a policy.")
-                .domain(CoreModel.policy).create();
-        validTo = new RelationBuilder(this, "validTo").comment("Defines an expire date of a policy.")
-                .domain(CoreModel.policy).create();
-        verifies = new RelationBuilder(this, "verifies")
+        validFrom = new RelationBuilder(this, "validFrom", CoreModel.policy).comment("Defines a start date of a policy.")
+                .create();
+        validTo = new RelationBuilder(this, "validTo", CoreModel.policy).comment("Defines an expire date of a policy.")
+                .create();
+        verifies = new RelationBuilder(this, "verifies", qualityAssurance)
                 .comment("A quality assurance method verifies that a quality assurance criterion or test is " +
                         "fulfilled regarding the related ecosystem entity.")
-                .domain(qualityAssurance).domain(qualityAssuranceMethod).range(CoreModel.ecosystemEntity).create();
-        hasImplementation = new RelationBuilder(this, "hasImplementation")
+                .domain(qualityAssuranceMethod).range(CoreModel.ecosystemEntity).create();
+        hasImplementation = new RelationBuilder(this, "hasImplementation", qualityAssurance)
                 .comment("Links a Quality Assurance Criterion to a Quality Assurance method that implements the " +
-                        "criterion").domain(qualityAssurance).range(qualityAssuranceMethod).create();
-        verifiedBy = new RelationBuilder(this, "verifiedBy")
+                        "criterion").range(qualityAssuranceMethod).create();
+        verifiedBy = new RelationBuilder(this, "verifiedBy", manualDependencyCheck)
                 .comment("Links a Manual Dependency Check to the Agent that executes the manual qa verification.")
-                .domain(manualDependencyCheck).range(CoreModel.ecosystemAgent).create();
-        assuresQualityOf = new RelationBuilder(this, "assuresQualityOf")
+                .range(CoreModel.ecosystemAgent).create();
+        assuresQualityOf = new RelationBuilder(this, "assuresQualityOf", qualityAssurance)
                 .comment("The Quality Assurance definition assures the quality of a designated Policy linked via " +
-                        "this relation.").domain(qualityAssurance).range(CoreModel.policy).create();
+                        "this relation.").range(CoreModel.policy).create();
     }
 }

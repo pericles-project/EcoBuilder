@@ -48,6 +48,7 @@ public class ExperimentsSaver extends AbstractSaver {
         saveExperiment(new DigitalVideoArtworkExample());
         saveExperiment(new MediatorScript());
         saveExperiment(new ChangeManagementExample());
+        saveExperiment(new SpacePolicyChangeExample());
         return null;
     }
 

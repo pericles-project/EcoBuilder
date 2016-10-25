@@ -54,6 +54,7 @@ public class AnalysisModel extends AbstractModel {
     public static DEMRelation tags;
     public static DEMRelation hasCost;
     public static DEMRelation costOf;
+    public static DEMRelation hasSignificance;
 
     public AnalysisModel() {
         super("DEM-Analysis", "The analysis model provides entities to support the analysis of " +
@@ -78,30 +79,32 @@ public class AnalysisModel extends AbstractModel {
 
     @Override
     public void createModelRelations() {
-        hasAnnotation = new RelationBuilder(this, "hasAnnotation")
-                .comment("The ecosystem entity has an annotation.").domain(CoreModel.ecosystemEntity)
+        hasAnnotation = new RelationBuilder(this, "hasAnnotation", CoreModel.ecosystemEntity)
+                .comment("The ecosystem entity has an annotation.")
                 .range(annotation).create();
-        annotates = new RelationBuilder(this, "annotates").comment("Annotates an ecosystem entity.").domain(annotation)
+        annotates = new RelationBuilder(this, "annotates", annotation).comment("Annotates an ecosystem entity.")
                 .range(CoreModel.ecosystemEntity).inverse(hasAnnotation).create();
-        hasPurpose = new RelationBuilder(this, "hasPurpose").comment("The ecosystem entity has a specific purpose.")
-                .domain(CoreModel.ecosystemEntity).range(purpose).superRelation(LRM_static_schema.intention).create();
-        purposeOf = new RelationBuilder(this, "purposeOf").comment("The purpose refers to an ecosystem entity.")
-                .domain(purpose).range(CoreModel.ecosystemEntity).inverse(hasPurpose).create();
-        hasValue = new RelationBuilder(this, "hasValue").comment("Assigns a weight to a weighted relation.")
-                .domain(weightedRelation).create();
-        calculatedBy = new RelationBuilder(this, "calculatedBy")
-                .comment("The value of the weighted relation was calculated or meassured by the referred entity.")
-                .domain(weightedRelation).range(CoreModel.ecosystemEntity).create();
-        taggedBy = new RelationBuilder(this, "taggedBy")
+        hasPurpose = new RelationBuilder(this, "hasPurpose", CoreModel.ecosystemEntity).comment("The ecosystem entity has a specific purpose.")
+                .range(purpose).superRelation(LRM_static_schema.intention).create();
+        purposeOf = new RelationBuilder(this, "purposeOf", purpose).comment("The purpose refers to an ecosystem entity.")
+                .range(CoreModel.ecosystemEntity).inverse(hasPurpose).create();
+        hasValue = new RelationBuilder(this, "hasValue", weightedRelation).comment("Assigns a weight to a weighted relation.")
+                .create();
+        calculatedBy = new RelationBuilder(this, "calculatedBy", weightedRelation)
+                .comment("The value of the weighted relation was calculated or measured by the referred entity.")
+                .range(CoreModel.ecosystemEntity).create();
+        taggedBy = new RelationBuilder(this, "taggedBy", CoreModel.ecosystemEntity)
                 .comment("This entity is tagged by a tag.")
-                .domain(CoreModel.ecosystemEntity).range(tag).create();
-        tags = new RelationBuilder(this, "tags")
+                .range(tag).create();
+        tags = new RelationBuilder(this, "tags", tag)
                 .comment("This tag tags the referred entities")
-                .domain(tag).range(CoreModel.ecosystemEntity).inverse(taggedBy).create();
-        costOf = new RelationBuilder(this, "costOf").comment("This value is the cost value of the referred entity.")
-                .domain(cost).range(CoreModel.ecosystemEntity).create();
-        hasCost = new RelationBuilder(this, "hasCost").comment("This entity has a cost value")
-                .domain(CoreModel.ecosystemEntity).range(cost).inverse(costOf).create();
+                .range(CoreModel.ecosystemEntity).inverse(taggedBy).create();
+        costOf = new RelationBuilder(this, "costOf", cost).comment("This value is the cost value of the referred entity.")
+                .range(CoreModel.ecosystemEntity).create();
+        hasCost = new RelationBuilder(this, "hasCost", CoreModel.ecosystemEntity).comment("This entity has a cost value")
+                .range(cost).inverse(costOf).create();
+        hasSignificance = new RelationBuilder(this, "hasSignificance", CoreModel.ecosystemEntity).comment("This enity has a significance")
+                .range(significance).create();
 
         //TODO: relation inheritance
 //        weightedRelation.addPossibleRelation(LRM_static_schema.from_property, CoreModel.ecosystemEntity);

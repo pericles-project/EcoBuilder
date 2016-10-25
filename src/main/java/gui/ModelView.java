@@ -60,6 +60,14 @@ public class ModelView extends GridPane implements Serializable {
         childTemplateViews.add(item);
     }
 
+    /**
+     * The model view manages a {@link RadioTemplate} for each available template of the model. They manage which
+     * templates are used in a given scenario.
+     *
+     * This method will return the corresponding radio template with the given name.
+     * @param name Name of the template
+     * @return
+     */
     public RadioTemplate getRadioTemplate(String name) {
         for (RadioTemplate radioTemplate : childTemplateViews) {
             if (radioTemplate.templateView.name.equals(name)) {

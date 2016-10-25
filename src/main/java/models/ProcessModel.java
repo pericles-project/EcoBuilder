@@ -18,6 +18,7 @@
 package models;
 
 import entities.AggregatedProcess.AggregatedProcessTemplate;
+import entities.AtomicProcess;
 import entities.EcosystemEvent.EventTemplate;
 import entities.HumanActivity.HumanActivityTemplate;
 import entities.HumanAgent.HumanAgentTemplate;
@@ -38,6 +39,7 @@ public class ProcessModel extends AbstractModel {
      */
     public static EventTemplate ecosystemEvent;
     public static AggregatedProcessTemplate aggregatedProcess;
+    public static AtomicProcess.AtomicProcessTemplate atomicProcess;
     public static HumanAgentTemplate humanAgent;
     public static HumanActivityTemplate humanActivity;
     public static ProcessForEntityValidationTemplate processForEntityValidation;
@@ -45,7 +47,7 @@ public class ProcessModel extends AbstractModel {
     public static ProcessForTransformationTemplate processForTransformation;
     public static Role.RoleTemplate role;
     public static Implementation.ImplementationTemplate implementation;
-    public static Slot.SlotTemplate slot;
+    public static Slot.SlotTemplate slot; //TODO: distinguish between input and output slots
 
     public static DEMRelation responsible;
     public static DEMRelation hasAuthor;
@@ -57,11 +59,13 @@ public class ProcessModel extends AbstractModel {
     public static DEMRelation hasOutputSlot;
     public static DEMRelation passesOutputTo;
     public static DEMRelation receivesInputFrom;
-    public static DEMRelation slotNumber;
-    public static DEMRelation slotTemplate;
-    public static DEMRelation processSequence;
+    public static DEMRelation slotType;
+    public static DEMRelation processFlow;
+    public static DEMRelation dataFlow;
     public static DEMRelation personOwns;
     public static DEMRelation ownedByPerson;
+    public static DEMRelation isOptional;
+    public static DEMRelation implementationType;
 
     public ProcessModel() {
         super("DEM-Process", "The process model provides entities for a more detailed " +
@@ -73,6 +77,7 @@ public class ProcessModel extends AbstractModel {
     public void createModelEntities() {
         ecosystemEvent = new EventTemplate(this);
         aggregatedProcess = new AggregatedProcessTemplate(this);
+        atomicProcess = new AtomicProcess.AtomicProcessTemplate(this);
         humanAgent = new HumanAgentTemplate(this);
         humanActivity = new HumanActivityTemplate(this);
         processForEntityValidation = new ProcessForEntityValidationTemplate(this);
@@ -85,44 +90,48 @@ public class ProcessModel extends AbstractModel {
 
     @Override
     public void createModelRelations() {
-        responsible = new RelationBuilder(this, "responsible")
+        responsible = new RelationBuilder(this, "responsible", CoreModel.policy)
                 .comment("Refers to the responsible person for the application of the policy.")
-                .domain(CoreModel.policy).range(humanAgent).create();
-        hasAuthor = new RelationBuilder(this, "hasAuthor").comment("Defines the author of the Digital Object.")
-                .domain(CoreModel.digitalObject).range(humanAgent).create();
-        hasRole = new RelationBuilder(this, "hasRole")
+                .range(humanAgent).create();
+        hasAuthor = new RelationBuilder(this, "hasAuthor", CoreModel.digitalObject).comment("Defines the author of the Digital Object.")
+                .range(humanAgent).create();
+        hasRole = new RelationBuilder(this, "hasRole", CoreModel.community)
                 .comment("Assigns a role to a community or to an agent.")
-                .domain(CoreModel.community).domain(CoreModel.ecosystemAgent).range(role).create();
-        hasAutomationState = new RelationBuilder(this, "hasAutomationState")
-                .comment("Links an Automation State to a Process.").domain(CoreModel.process).create();
-        hasImplementation = new RelationBuilder(this, "hasImplementation")
-                .comment("Links an implementation entity to a Process.").domain(CoreModel.process)
+                .domain(CoreModel.ecosystemAgent).range(role).create();
+        hasAutomationState = new RelationBuilder(this, "hasAutomationState", CoreModel.process)
+                .comment("Links an Automation State to a Process.").create();
+        hasImplementation = new RelationBuilder(this, "hasImplementation", CoreModel.process)
+                .comment("Links an implementation entity to a Process.")
                 .range(implementation).create();
-        hasMimeType = new RelationBuilder(this, "hasMimeType")
-                .comment("Defines the mime type of an Implementation.").domain(implementation).create();
-        hasInputSlot = new RelationBuilder(this, "hasInputSlot").comment("Specifies an output slot of a process.")
-                .domain(slot).create();
-        hasOutputSlot = new RelationBuilder(this, "hasOutputSlot").comment("Specifies an input slot of a process.")
-                .domain(slot).create();
-        slotNumber = new RelationBuilder(this, "slotNumber")
-                .comment("The number of the slot as input or output parameter of the process.").domain(slot).create();
-        slotTemplate = new RelationBuilder(this, "slotTemplate")
+        hasMimeType = new RelationBuilder(this, "hasMimeType", implementation)
+                .comment("Defines the mime type of an Implementation.").create();
+        hasInputSlot = new RelationBuilder(this, "hasInputSlot", slot).comment("Specifies an output slot of a process.").create();
+        hasOutputSlot = new RelationBuilder(this, "hasOutputSlot", slot).comment("Specifies an input slot of a process.").create();
+        slotType = new RelationBuilder(this, "slotType", slot)
                 .comment("The entity template / type which instances can be passed to this process slot")
-                .domain(slot).create();
-        processSequence = new RelationBuilder(this, "processSequence")
-                .comment("Order of execution of sub-processes of an aggregated process").domain(aggregatedProcess)
                 .create();
-        passesOutputTo = new RelationBuilder(this, "passesOutputTo")
+        processFlow = new RelationBuilder(this, "processFlow", aggregatedProcess)
+                .comment("Order of execution of sub-processes of an aggregated process")
+                .create();
+        dataFlow = new RelationBuilder(this, "dataFlow", aggregatedProcess)
+                .comment("Data connections between sub-processes in an aggregated process.")
+                .create();
+        passesOutputTo = new RelationBuilder(this, "passesOutputTo", slot)
                 .comment("The output of a typed process output slot is passed to a process input slot of the same type.")
-                .domain(slot).range(slot).create();
-        receivesInputFrom = new RelationBuilder(this, "receivesInputFrom")
+                .range(slot).create();
+        receivesInputFrom = new RelationBuilder(this, "receivesInputFrom", slot)
                 .comment("The typed process input slot receives the output from an output slot of the same type.")
-                .domain(slot).range(slot).create();
-        ownedByPerson = new RelationBuilder(this, "ownedByPerson")
+                .range(slot).create();
+        ownedByPerson = new RelationBuilder(this, "ownedByPerson", CoreModel.ecosystemEntity)
                 .comment("A human agent can own ecosystem entities.")
-                .domain(CoreModel.ecosystemEntity).range(ProcessModel.humanAgent).create();
-        personOwns = new RelationBuilder(this, "personOwns")
+                .range(ProcessModel.humanAgent).create();
+        personOwns = new RelationBuilder(this, "personOwns", humanAgent)
                 .comment("A human agent can own ecosystem entities.")
-                .domain(humanAgent).range(CoreModel.ecosystemEntity).inverse(ProcessModel.ownedByPerson).create();
+                .range(CoreModel.ecosystemEntity).inverse(ProcessModel.ownedByPerson).create();
+        isOptional = new RelationBuilder(this, "isOptional", slot)
+                .comment("Input slots can be optional, whereas output slots are always mandatory.")
+                .create(); //TODO: Just for input slots
+        implementationType = new RelationBuilder(this, "implementationType", implementation)
+                .comment("The type format of the implementation, e.g. BPMN.").create();
     }
 }

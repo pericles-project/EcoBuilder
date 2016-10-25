@@ -93,19 +93,19 @@ public class VideoStreaming extends Experiment {
     }
 
     private void createAbstractProperties() {
-        hasResolution = new RelationBuilder(scenario, "hasResolution").domain(codec).create();
-        hasFramerate = new RelationBuilder(scenario, "hasFramerate").domain(codec).create();
-        hasVideoDatarate = new RelationBuilder(scenario, "hasVideoDatarate").domain(codec).create();
+        hasResolution = new RelationBuilder(scenario, "hasResolution", codec).create();
+        hasFramerate = new RelationBuilder(scenario, "hasFramerate", codec).create();
+        hasVideoDatarate = new RelationBuilder(scenario, "hasVideoDatarate", codec).create();
         hasMaxVideoDatarate = new RelationBuilder(scenario,
-                "hasMaxVideoDatarate").domain(codec).create();
-        supportsCodec = new RelationBuilder(scenario, "supportsCodec").range(codec).create();
-        hasCodec = new RelationBuilder(scenario, "hasCodec").range(codec).create();
-        hasFilename = new RelationBuilder(scenario, "hasFilename").create();
-        isKindOfNetwork = new RelationBuilder(scenario, "isKindOfNetwork").create();
+                "hasMaxVideoDatarate", codec).create();
+        supportsCodec = new RelationBuilder(scenario, "supportsCodec", codec).create();
+        hasCodec = new RelationBuilder(scenario, "hasCodec", codec).create();
+        hasFilename = new RelationBuilder(scenario, "hasFilename", CoreModel.digitalObject).create();
+        isKindOfNetwork = new RelationBuilder(scenario, "isKindOfNetwork", CoreModel.ecosystemEntity).create();
         hasNetworkBandwidth = new RelationBuilder(scenario,
-                "hasNetworkBandwidth").create();
+                "hasNetworkBandwidth", CoreModel.ecosystemEntity).create();
         hasNetworkBandwidthMeasured = new RelationBuilder(scenario,
-                "hasNetworkBandwidthMeasured").create();
+                "hasNetworkBandwidthMeasured", CoreModel.ecosystemEntity).create();
     }
 
     private void createConcreteResources() {

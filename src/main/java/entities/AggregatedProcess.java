@@ -29,7 +29,7 @@ import models.ScenarioModel;
 public class AggregatedProcess extends Process {
 
     public AggregatedProcess(ScenarioModel scenario, String identifier) {
-        super(scenario, identifier, ProcessModel.aggregatedProcess);
+        super(scenario, identifier, ProcessModel.atomicProcess);
     }
 
     public void hasSubProcess(Process process) {
@@ -38,7 +38,7 @@ public class AggregatedProcess extends Process {
     }
 
     public void setProcessSequence(String sequence) {
-        addProperty(ProcessModel.processSequence, sequence);
+        addProperty(ProcessModel.processFlow, sequence);
     }
 
     public static class AggregatedProcessTemplate extends ProcessTemplate {

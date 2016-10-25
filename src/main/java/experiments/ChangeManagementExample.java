@@ -62,9 +62,9 @@ public class ChangeManagementExample extends Experiment {
     EcosystemDependency appliesTo;
     EcosystemDependency uses;
     EcosystemDependency uses2;
-    DEMRelation URL = new RelationBuilder(scenario, "URL").create();
-    DEMRelation type = new RelationBuilder(scenario, "type").create();
-    DEMRelation creationTime = new RelationBuilder(scenario, "creationTime").create();
+    DEMRelation URL = new RelationBuilder(scenario, "URL", CoreModel.digitalObject).create();
+    DEMRelation type = new RelationBuilder(scenario, "type", CoreModel.digitalObject).create();
+    DEMRelation creationTime = new RelationBuilder(scenario, "creationTime", CoreModel.digitalObject).create();
 
     public ChangeManagementExample() {
         super("Change-management-EUMETSAT-example");
@@ -119,7 +119,7 @@ public class ChangeManagementExample extends Experiment {
         METSATPolicy14.hasMandator(EUMETSAT);
         METSATPolicy14.hasRequirementsLevel(RequirementLevel.ReqLevel.MUST);
         METSATPolicy14.hasType(Policy.TypeOfPolicy.MANDATORY);
-        DEMRelation time_before_release = new RelationBuilder(scenario, "time_before_release").create();
+        DEMRelation time_before_release = new RelationBuilder(scenario, "time_before_release", CoreModel.ecosystemEntity).create();
         METSATPolicy14.addProperty(time_before_release, "24");
         METSATPolicy14.addProperty(URL, "http://eumetsat/private");
         METSATPolicy14.addProperty(type, "Meteosat data");
@@ -145,14 +145,14 @@ public class ChangeManagementExample extends Experiment {
                 "Create dependency “appliesTo” between this policy  and" +
                 "New DOdata;"
         );
-        DEMRelation change0 = new RelationBuilder(scenario, "change0, TimeTrigger delta reported").create();
+        DEMRelation change0 = new RelationBuilder(scenario, "change0, TimeTrigger delta reported", CoreModel.ecosystemEntity).create();
 
         appliesTo.addProperty(change0, "\n" +
                 "Precondition: TimeTrigger delta reported\n" +
                 "Impact: if (DOdata->location = private repository->URL) and  (DOdata->time - creation time) >policy->X\n" +
                 "Move(DOdata); PartialRes (DOdata);\n"
         );
-        DEMRelation change1 = new RelationBuilder(scenario, "change1, change in repository URL").create();
+        DEMRelation change1 = new RelationBuilder(scenario, "change1, change in repository URL", CoreModel.ecosystemEntity).create();
 
         appliesTo.addProperty(change1, "\n" +
                 "Precondition: change in Repository url (delta)\n" +

@@ -62,20 +62,20 @@ public class InfrastructureModel extends AbstractModel {
 
     @Override
     public void createModelRelations() {
-        isUsedBy = new RelationBuilder(this, "isUsedBy")
+        isUsedBy = new RelationBuilder(this, "isUsedBy", serviceInterface)
                 .comment("This relation can be used to express that an agent uses an interface to access technical " +
                         "services, as well as that a community uses such an interface.")
-                .domain(serviceInterface).range(CoreModel.ecosystemAgent).create();
-        providesAccessTo = new RelationBuilder(this, "providesAccessTo")
+                .range(CoreModel.ecosystemAgent).create();
+        providesAccessTo = new RelationBuilder(this, "providesAccessTo", serviceInterface)
                 .comment("The service interface provides access to digital objects, technical services, processes, " +
                         "or infrastructure components as hardware- or softwareagents.")
-                .domain(serviceInterface).range(CoreModel.digitalObject).range(CoreModel.technicalService)
+                .range(CoreModel.digitalObject).range(CoreModel.technicalService)
                 .range(CoreModel.process).range(infrastructureComponent).create();
-        accessedVia = new RelationBuilder(this, "accessedVia")
-                .comment("This component is accessed via a service interface.").domain(CoreModel.digitalObject)
+        accessedVia = new RelationBuilder(this, "accessedVia", CoreModel.digitalObject)
+                .comment("This component is accessed via a service interface.")
                 .domain(CoreModel.process).domain(CoreModel.technicalService).domain(infrastructureComponent)
                 .range(serviceInterface).inverse(providesAccessTo).create();
-        runsOn = new RelationBuilder(this, "runsOn").comment("A software or hardware agent runs on a server.")
-                .domain(automaticAgent).range(CoreModel.technicalService).create();
+        runsOn = new RelationBuilder(this, "runsOn", automaticAgent).comment("A software or hardware agent runs on a server.")
+                .range(CoreModel.technicalService).create();
     }
 }

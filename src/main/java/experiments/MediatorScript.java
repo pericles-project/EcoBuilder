@@ -22,6 +22,7 @@ import entities.DigitalObject;
 import entities.HumanAgent;
 import entities.ServiceInterface;
 import entities.TechnicalService;
+import models.CoreModel;
 import models.ScenarioModel;
 import relations.DEMRelation;
 import relations.RelationBuilder;
@@ -37,18 +38,18 @@ import java.nio.file.attribute.PosixFileAttributes;
  * and inserts the extracted information into the related DEM entities.
  */
 public class MediatorScript extends Experiment {
-    private DEMRelation lastModified = new RelationBuilder(scenario, "last modified").create();
-    private DEMRelation lastAccess = new RelationBuilder(scenario, "last access").create();
-    private DEMRelation creationTime = new RelationBuilder(scenario, "creation time").create();
-    private DEMRelation fileType = new RelationBuilder(scenario, "file type").create();
-    private DEMRelation fileSize = new RelationBuilder(scenario, "file size").create();
-    private DEMRelation fileKey = new RelationBuilder(scenario, "file key").create();
-    private DEMRelation fileGroupOwner = new RelationBuilder(scenario, "file group owner").create();
+    private DEMRelation lastModified = new RelationBuilder(scenario, "last modified", CoreModel.digitalObject).create();
+    private DEMRelation lastAccess = new RelationBuilder(scenario, "last access", CoreModel.digitalObject).create();
+    private DEMRelation creationTime = new RelationBuilder(scenario, "creation time", CoreModel.digitalObject).create();
+    private DEMRelation fileType = new RelationBuilder(scenario, "file type", CoreModel.digitalObject).create();
+    private DEMRelation fileSize = new RelationBuilder(scenario, "file size", CoreModel.digitalObject).create();
+    private DEMRelation fileKey = new RelationBuilder(scenario, "file key", CoreModel.digitalObject).create();
+    private DEMRelation fileGroupOwner = new RelationBuilder(scenario, "file group owner", CoreModel.digitalObject).create();
 
-    private DEMRelation userLanguage = new RelationBuilder(scenario, "user language").create();
-    private DEMRelation userTimezone = new RelationBuilder(scenario, "user timezone").create();
-    private DEMRelation osVersion = new RelationBuilder(scenario, "os version").create();
-    private DEMRelation osName = new RelationBuilder(scenario, "os name").create();
+    private DEMRelation userLanguage = new RelationBuilder(scenario, "user language", CoreModel.digitalObject).create();
+    private DEMRelation userTimezone = new RelationBuilder(scenario, "user timezone", CoreModel.digitalObject).create();
+    private DEMRelation osVersion = new RelationBuilder(scenario, "os version", CoreModel.digitalObject).create();
+    private DEMRelation osName = new RelationBuilder(scenario, "os name", CoreModel.digitalObject).create();
 
     private ReportFileTemplate reportFileTemplate;
     private ResearcherSystemTemplate researcherSystemTemplate;

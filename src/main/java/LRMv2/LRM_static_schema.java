@@ -388,7 +388,7 @@ public class LRM_static_schema extends AbstractModel {
         //TODO: new RelationBuilder.wrap(OntProperty relation)
 //        from_property = new Relation(this, "from", from, "");
 //        to_property = new Relation(this, "to", to, "");
-        from_property = model.createProperty("http://xrce.xerox.com/LRM#dfrom");
+        from_property = model.createProperty("http://xrce.xerox.com/LRM#from");
         to_property = model.createProperty("http://xrce.xerox.com/LRM#to");
     }
 }

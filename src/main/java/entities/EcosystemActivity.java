@@ -96,7 +96,7 @@ public class EcosystemActivity extends EcosystemEntity {
                     "An activity executed by an EcosystemAgent. Add a specific activity class "
                             + "from the LRM as second base class to specify the activity type, e.g. "
                             + "lrm:ActivityStarted, lrm:ActivityStopped, lrm:ActivitySuspended, lrm:ActivityResumed.",
-                    CoreModel.ecosystemEntity);
+                    CoreModel.process);
         }
 
         public ActivityTemplate(AbstractModel model, String name, String comment, Template parent) {
