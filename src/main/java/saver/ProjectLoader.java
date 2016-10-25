@@ -74,6 +74,9 @@ public class ProjectLoader {
      * Loads the saved scenario from a de-serialised {@link ScenarioPanel}.
      */
     private void loadProject(ScenarioPanel scenario) {
+        if (scenario.addedDVA) {
+            ecoBuilder.scenarioPane.addDVA();
+        }
         ModelView scenarioSourceModel = null;
         for (ModelView savedModel : scenario.models) {
             if (savedModel instanceof DEMModelView) {

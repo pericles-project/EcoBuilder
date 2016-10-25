@@ -18,6 +18,8 @@
 package gui;
 
 import entities.Template;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import models.AbstractModel;
@@ -44,9 +46,18 @@ public class ScenarioPanel extends GridPane implements Serializable {
     public final Set<CustomTemplateView> customTemplates = new HashSet<>();
     public final Set<CustomRelation> customRelations = new HashSet<>();
     public Set<AbstractModel> toBeImported = new HashSet<>();
+    private transient TextArea dvaLabel = new TextArea("The Digital Video Artwork (DVA) ontology introduces concepts for modelling video artworks." +
+            "Importing the DVA ontology introduces new relations also for existing entities:");
+    private transient Button addDVA = new Button("Import DVA ontology");
+    public boolean addedDVA = false;
 
-    public ScenarioPanel(EcoBuilder gui) {
-        this.ecoBuilder = gui;
+    public ScenarioPanel(EcoBuilder ecoBuilder) {
+        this.ecoBuilder = ecoBuilder;
+        addDVA.setOnAction(e -> addDVA());
+        dvaLabel.setEditable(false);
+        dvaLabel.setMaxHeight(60);
+        dvaLabel.setPrefHeight(60);
+        dvaLabel.setWrapText(true);
         setId(EcoBuilder.SCENARIO_ID);
         title.setId(EcoBuilder.TITLE_ID);
         getStyleClass().add(EcoBuilder.PANE);
@@ -65,12 +76,18 @@ public class ScenarioPanel extends GridPane implements Serializable {
         scenarioModel = new ModelView(this, ScenarioModel.PREFIX, ScenarioModel.DESCRIPTION);
         models.add(scenarioModel);
         setConstraints(scenarioModel, 0, i);
-        getChildren().add(scenarioModel);
+        i++;
+        setConstraints(dvaLabel, 0, i);
+        i++;
+        setConstraints(addDVA, 0, i);
+        getChildren().addAll(scenarioModel, dvaLabel, addDVA);
     }
 
     private void transferParents(Set<ModelView> models) {
         for (ModelView model : models) {
-            transferParents((DEMModelView) model);
+            if (model instanceof DEMModelView) {
+                transferParents((DEMModelView) model);
+            }
         }
     }
 
@@ -92,7 +109,9 @@ public class ScenarioPanel extends GridPane implements Serializable {
      */
     private void transferRelationDomains() {
         for (ModelView model : models) {
-            transferDomainsAndRanges((DEMModelView) model);
+            if (model instanceof DEMModelView) {
+                transferDomainsAndRanges((DEMModelView) model);
+            }
         }
     }
 
@@ -115,6 +134,22 @@ public class ScenarioPanel extends GridPane implements Serializable {
                 }
             }
         }
+    }
+
+    /**
+     * Imports the Digital Video Artwork domain ontology.
+     */
+    public void addDVA() {
+        DEM.addedDVA = true;
+        addedDVA = true;
+        DEMModelView dvaModel = new DEMModelView(DEM.DVA_MODEL, this);
+        models.add(dvaModel);
+        int i = getChildren().indexOf(addDVA);
+        setConstraints(dvaModel, 0, i);
+        getChildren().remove(addDVA);
+        getChildren().add(dvaModel);
+        transferRelationDomains();
+        transferParents(models);
     }
 
     /**

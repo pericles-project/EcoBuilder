@@ -233,7 +233,7 @@ public class EcoBuilder extends Application {
             scene.getStylesheets().add(STYLESHEET);
             Stage stage = new Stage();
             stage.initStyle(StageStyle.UTILITY);
-            stage.setTitle("Create custom relation");
+            stage.setTitle("Close");
             stage.setScene(scene);
             stage.show();
             no.setOnAction(e -> {

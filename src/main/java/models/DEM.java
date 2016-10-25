@@ -32,12 +32,6 @@ import java.util.List;
  * <p>
  */
 public class DEM {
-    private static DEM INSTANCE = new DEM();
-
-    public static DEM getInstance() {
-        return INSTANCE;
-    }
-
     // The DEM imports the LRM static and dynamic schema:
     public static final LRM_static_schema LRM_STATIC = new LRM_static_schema();
     public static final LRM_dynamic_schema LRM_DYNAMIC = new LRM_dynamic_schema();
@@ -57,6 +51,8 @@ public class DEM {
     // Digital Video Artwork Domain Ontology:
     public static final DVAWrapper DVA_MODEL = new DVAWrapper();
 
+    public static boolean addedDVA = false;
+
     /**
      * The constructor is private, as the class is a Singleton. The template models must exist only once!
      */
@@ -71,7 +67,9 @@ public class DEM {
         models.add(INFRASTRUCTURE_MODEL);
         models.add(ANALYSIS_MODEL);
         models.add(PRESERVATION_POLICY_MODEL);
-        models.add(DVA_MODEL);
+        if (addedDVA) {
+            models.add(DVA_MODEL);
+        }
         return models;
     }
 }
