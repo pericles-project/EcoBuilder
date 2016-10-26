@@ -9,8 +9,11 @@ import java.text.DateFormat;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+
+import static java.time.format.DateTimeFormatter.*;
 
 /**
  * Created by Johannes on 12.10.16.
@@ -80,26 +83,27 @@ public class SpacePolicyChangeExample extends Experiment {
         DigitalObject dummy1 = new DigitalObject(scenario, "SEVIRI Image 1");
         dummy1.partOf(seviriImages);
         dummy1.addProperty(releaseState, "private");
-        LocalDateTime creationDate =  LocalDateTime.now();
-        dummy1.addProperty(dateCreated, creationDate.format(DateTimeFormatter.ISO_DATE_TIME));
+        ZonedDateTime creationDate =  ZonedDateTime.now();
+        DateTimeFormatter DATEFORMAT = ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        dummy1.addProperty(dateCreated, creationDate.format(DATEFORMAT));
 
         creationDate=creationDate.plusHours(2);
         DigitalObject dummy2 = new DigitalObject(scenario, "SEVIRI Image 2");
         dummy2.partOf(seviriImages);
         dummy2.addProperty(releaseState, "private");
-        dummy2.addProperty(dateCreated, creationDate.format(DateTimeFormatter.ISO_DATE_TIME));
+        dummy2.addProperty(dateCreated, creationDate.format(DATEFORMAT));
         creationDate=creationDate.plusHours(2);
 
         DigitalObject dummy3 = new DigitalObject(scenario, "SEVIRI Image 3");
         dummy3.partOf(seviriImages);
         dummy3.addProperty(releaseState, "public");
-        dummy3.addProperty(dateCreated, creationDate.format(DateTimeFormatter.ISO_DATE_TIME));
+        dummy3.addProperty(dateCreated, creationDate.format(DATEFORMAT));
         creationDate=creationDate.plusHours(2);
 
         DigitalObject dummy4 = new DigitalObject(scenario, "SEVIRI Image 4");
         dummy4.partOf(seviriImages);
         dummy4.addProperty(releaseState, "public");
-        dummy4.addProperty(dateCreated, creationDate.format(DateTimeFormatter.ISO_DATE_TIME));
+        dummy4.addProperty(dateCreated, creationDate.format(DATEFORMAT));
 
 
     }
