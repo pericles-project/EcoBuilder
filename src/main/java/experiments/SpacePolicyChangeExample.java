@@ -9,6 +9,7 @@ import java.text.DateFormat;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -25,13 +26,6 @@ import static java.time.format.DateTimeFormatter.*;
  *
  */
 public class SpacePolicyChangeExample extends Experiment {
-
-    public static DateFormat ISO8601 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ"){
-        public Date parse(String source, ParsePosition pos) {
-            return super.parse(source.replaceFirst(":(?=[0-9]{2}$)",""),pos);
-        }
-    };
-
 
     private Policy dataFormatPolicy;
     private Policy dataReleasePolicy;
@@ -78,13 +72,12 @@ public class SpacePolicyChangeExample extends Experiment {
         OntProperty releaseState = scenario.model.createOntProperty("http://www.pericles-project.eu/ns/DEM-Scenario#releaseState");
         OntProperty dateCreated = scenario.model.createOntProperty("http://www.pericles-project.eu/ns/DEM-Scenario#dateCreated");
 
-
+        ZonedDateTime creationDate = ZonedDateTime.ofInstant(new Date().toInstant(), ZoneId.of("UTC"));
+        DateTimeFormatter DATEFORMAT = ofPattern("yyyy-MM-dd'T'HH:mm:ssX");
 
         DigitalObject dummy1 = new DigitalObject(scenario, "SEVIRI Image 1");
         dummy1.partOf(seviriImages);
         dummy1.addProperty(releaseState, "private");
-        ZonedDateTime creationDate =  ZonedDateTime.now();
-        DateTimeFormatter DATEFORMAT = ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
         dummy1.addProperty(dateCreated, creationDate.format(DATEFORMAT));
 
         creationDate=creationDate.plusHours(2);
