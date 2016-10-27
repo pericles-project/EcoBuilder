@@ -22,7 +22,9 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.layout.GridPane;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class TemplateView extends GridPane implements Serializable {
@@ -68,8 +70,14 @@ public class TemplateView extends GridPane implements Serializable {
         return entity;
     }
 
+    public void removeAllChildren() {
+        List<EntityView> childs = new ArrayList<>();
+        childs.addAll(childEntities);
+        childs.forEach(this::remove);
+    }
+
     public void remove(EntityView entity) {
-        this.getChildren().remove(entity);
+        getChildren().remove(entity);
         childEntities.remove(entity);
         setConstraints(add, 0, childEntities.size() + 2);
         int entityIndex = 1;

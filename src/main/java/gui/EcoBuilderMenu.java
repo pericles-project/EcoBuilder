@@ -27,7 +27,7 @@ import javafx.scene.control.SeparatorMenuItem;
  * You can add further menus here, e.g. help.
  */
 public class EcoBuilderMenu extends MenuBar {
-    public EcoBuilderMenu(final EcoBuilder gui) {
+    public EcoBuilderMenu(final EcoBuilder ecoBuilder) {
         Menu fileMenu = new Menu("File");
         Menu ermrMenu = new Menu("Repository");
         MenuItem saveScenario = new MenuItem("Generate Your Scenario Model");
@@ -35,16 +35,18 @@ public class EcoBuilderMenu extends MenuBar {
         MenuItem saveExamples = new MenuItem("Generate Examples");
         MenuItem openProject = new MenuItem("Open Project");
         MenuItem saveProject = new MenuItem("Save Project");
+        MenuItem newProject = new MenuItem("New Project");
         MenuItem configure = new MenuItem("Configure");
         MenuItem send = new MenuItem("Send");
-        saveDEM.setOnAction(e -> gui.saveDEM());
-        saveScenario.setOnAction(e -> gui.saveScenario());
-        saveExamples.setOnAction(e -> gui.saveExamples());
-        saveProject.setOnAction(e -> gui.saveProject());
-        openProject.setOnAction(e -> gui.loadProject());
-        send.setOnAction(e -> gui.sendToERMR());
-        configure.setOnAction(e -> gui.configuteERMR());
-        fileMenu.getItems().addAll(saveScenario, saveDEM, saveExamples, new SeparatorMenuItem(), openProject, saveProject);
+        saveDEM.setOnAction(e -> ecoBuilder.saveDEM());
+        saveScenario.setOnAction(e -> ecoBuilder.saveScenario());
+        saveExamples.setOnAction(e -> ecoBuilder.saveExamples());
+        saveProject.setOnAction(e -> ecoBuilder.saveProject());
+        openProject.setOnAction(e -> ecoBuilder.loadProject());
+        newProject.setOnAction(e -> ecoBuilder.projectLoader.cleanModels());
+        send.setOnAction(e -> ecoBuilder.sendToERMR());
+        configure.setOnAction(e -> ecoBuilder.configuteERMR());
+        fileMenu.getItems().addAll(saveScenario, saveDEM, saveExamples, new SeparatorMenuItem(), openProject, saveProject, newProject);
         ermrMenu.getItems().addAll(configure, send);
         getMenus().addAll(fileMenu, ermrMenu);
     }

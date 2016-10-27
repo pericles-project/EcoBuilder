@@ -25,6 +25,7 @@ import relations.Relation;
 
 import java.io.*;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -74,12 +75,14 @@ public class ProjectLoader {
     /**
      * Cleans the currently loaded models, to prepare them for loading the saved entities.
      */
-    private void cleanModels() {
+    public void cleanModels() {
         for (ModelView model : ecoBuilder.scenarioPane.models) {
             for (RadioTemplate radioTemplate : model.childTemplateViews) {
-                radioTemplate.templateView.childEntities.clear();
+                Iterator<EntityView> iterator = radioTemplate.templateView.childEntities.iterator();
+                radioTemplate.templateView.removeAllChildren();
                 radioTemplate.setSelected(false);
                 radioTemplate.selected = false;
+                model.removeTemplate(radioTemplate.templateView.name);
             }
         }
     }
