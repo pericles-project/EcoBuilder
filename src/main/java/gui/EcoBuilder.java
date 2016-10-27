@@ -17,6 +17,9 @@
  */
 package gui;
 
+import ERMR.Configuration;
+import ERMR.ERMRConnection;
+import ERMR.ERMRGui;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -115,13 +118,6 @@ public class EcoBuilder extends Application {
         primaryStage.show();
     }
 
-    private void setConstraints() {
-        GridPane.setConstraints(informationTitle, 0, 0);
-        GridPane.setConstraints(informationArea, 0, 1);
-        GridPane.setConstraints(separator, 0, 2);
-        GridPane.setConstraints(configurationPane, 0, 3);
-    }
-
     public EcoBuilder() {
         this.trayIcon = new SystemTrayIcon(this);
         experimentsSaver = new ExperimentsSaver(this);
@@ -133,6 +129,13 @@ public class EcoBuilder extends Application {
         entityConfiguration = new EntityConfiguration(configurationPane, scenarioPane);
         templateConfiguration = new TemplateConfiguration(configurationPane, scenarioPane);
         modelConfiguration = new ModelConfiguration(configurationPane);
+    }
+
+    private void setConstraints() {
+        GridPane.setConstraints(informationTitle, 0, 0);
+        GridPane.setConstraints(informationArea, 0, 1);
+        GridPane.setConstraints(separator, 0, 2);
+        GridPane.setConstraints(configurationPane, 0, 3);
     }
 
     /**
@@ -192,5 +195,29 @@ public class EcoBuilder extends Application {
         SystemTray systemTray = SystemTray.getSystemTray();
         systemTray.remove(trayIcon.icon);
         Platform.exit();
+    }
+
+    /**
+     * Sends the scenario model to the Entity Registry and Model Repository (ERMR)
+     */
+    protected void sendToERMR() {
+        ERMRConnection connection = new ERMRConnection();
+        File file = scenarioSaver.save();
+        if (file.isFile()) {
+            if (Configuration.isValid()) {
+                connection.send(file);
+            } else {
+                new ERMRGui(this);
+                if (Configuration.isValid()) {
+                    connection.send(file);
+                } else {
+                    System.err.println("Invalid ERMR configuraiton");
+                }
+            }
+        }
+    }
+
+    public void configuteERMR() {
+        new ERMRGui(this);
     }
 }

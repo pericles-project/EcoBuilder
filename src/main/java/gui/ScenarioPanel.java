@@ -83,24 +83,6 @@ public class ScenarioPanel extends GridPane implements Serializable {
         getChildren().addAll(scenarioModel, dvaLabel, addDVA);
     }
 
-    private void transferParents(Set<ModelView> models) {
-        for (ModelView model : models) {
-            if (model instanceof DEMModelView) {
-                transferParents((DEMModelView) model);
-            }
-        }
-    }
-
-    private void transferParents(DEMModelView model) {
-        for (RadioTemplate radioTemplate : model.childTemplateViews) {
-            DEMTemplateView templateView = (DEMTemplateView) radioTemplate.templateView;
-            for (Template parent : templateView.template.parents) {
-                TemplateView parentView = getTemplateView(parent.name);
-                templateView.parentTemplates.add(parentView);
-            }
-        }
-    }
-
     /**
      * The TemplateView ranges and domains need to be updated (These are used also by the custom relations later):
      * <p>
@@ -108,11 +90,9 @@ public class ScenarioPanel extends GridPane implements Serializable {
      * to the {@link Relation} domain/range set.
      */
     private void transferRelationDomains() {
-        for (ModelView model : models) {
-            if (model instanceof DEMModelView) {
-                transferDomainsAndRanges((DEMModelView) model);
-            }
-        }
+        models.stream().filter(model -> model instanceof DEMModelView).forEach(model -> {
+            transferDomainsAndRanges((DEMModelView) model);
+        });
     }
 
     private void transferDomainsAndRanges(DEMModelView modelView) {
@@ -132,6 +112,22 @@ public class ScenarioPanel extends GridPane implements Serializable {
                 } else {
                     System.err.println("Couldn't find range template view " + range.name);
                 }
+            }
+        }
+    }
+
+    private void transferParents(Set<ModelView> models) {
+        models.stream().filter(model -> model instanceof DEMModelView).forEach(model -> {
+            transferParents((DEMModelView) model);
+        });
+    }
+
+    private void transferParents(DEMModelView model) {
+        for (RadioTemplate radioTemplate : model.childTemplateViews) {
+            DEMTemplateView templateView = (DEMTemplateView) radioTemplate.templateView;
+            for (Template parent : templateView.template.parents) {
+                TemplateView parentView = getTemplateView(parent.name);
+                templateView.parentTemplates.add(parentView);
             }
         }
     }

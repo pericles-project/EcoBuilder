@@ -29,17 +29,23 @@ import javafx.scene.control.SeparatorMenuItem;
 public class EcoBuilderMenu extends MenuBar {
     public EcoBuilderMenu(final EcoBuilder gui) {
         Menu fileMenu = new Menu("File");
+        Menu ermrMenu = new Menu("Repository");
         MenuItem saveScenario = new MenuItem("Generate Your Scenario Model");
         MenuItem saveDEM = new MenuItem("Generate DEM");
         MenuItem saveExamples = new MenuItem("Generate Examples");
         MenuItem openProject = new MenuItem("Open Project");
         MenuItem saveProject = new MenuItem("Save Project");
+        MenuItem configure = new MenuItem("Configure");
+        MenuItem send = new MenuItem("Send");
         saveDEM.setOnAction(e -> gui.saveDEM());
         saveScenario.setOnAction(e -> gui.saveScenario());
         saveExamples.setOnAction(e -> gui.saveExamples());
         saveProject.setOnAction(e -> gui.saveProject());
         openProject.setOnAction(e -> gui.loadProject());
+        send.setOnAction(e -> gui.sendToERMR());
+        configure.setOnAction(e -> gui.configuteERMR());
         fileMenu.getItems().addAll(saveScenario, saveDEM, saveExamples, new SeparatorMenuItem(), openProject, saveProject);
-        getMenus().add(fileMenu);
+        ermrMenu.getItems().addAll(configure, send);
+        getMenus().addAll(fileMenu, ermrMenu);
     }
 }

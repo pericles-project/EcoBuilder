@@ -17,6 +17,7 @@
  */
 package models;
 
+import LRMv2.LRM_dynamic_schema;
 import LRMv2.LRM_static_schema;
 import entities.Community.CommunityTemplate;
 import entities.DigitalObject.DigitalObjectTemplate;
@@ -45,8 +46,8 @@ public class CoreModel extends AbstractModel {
     public static Template ecosystemEntity;
     public static EcosystemAgent.AgentTemplate ecosystemAgent;
     public static PolicyTemplate policy;
-    public static ProcessTemplate process;
     public static EcosystemActivity.ActivityTemplate ecosystemActivity;
+    public static ProcessTemplate process;
     public static DigitalObjectTemplate digitalObject;
     public static CommunityTemplate community;
     public static TechnicalServiceTemplate technicalService;
@@ -76,6 +77,9 @@ public class CoreModel extends AbstractModel {
     public static DEMRelation derivedFromObject;
     public static DEMRelation storedOn;
 
+    /* LRM relations */
+    public static DEMRelation executes;
+
     public CoreModel() {
         super("DEM-Core", "The core model of the Digital Ecosystem Model contains the five saver " +
                 "entities Digital Object, Community, Technical Service, Policy and Process.\n" +
@@ -90,8 +94,8 @@ public class CoreModel extends AbstractModel {
                 "inherited by all ecosystem entities.");
         ecosystemAgent = new EcosystemAgent.AgentTemplate(this);
         policy = new PolicyTemplate(this);
-        process = new ProcessTemplate(this);
         ecosystemActivity = new EcosystemActivity.ActivityTemplate(this);
+        process = new ProcessTemplate(this);
         digitalObject = new DigitalObjectTemplate(this);
         community = new CommunityTemplate(this);
         technicalService = new TechnicalServiceTemplate(this);
@@ -153,5 +157,10 @@ public class CoreModel extends AbstractModel {
         storedOn = new RelationBuilder(this, "storedOn", digitalObject)
                 .comment("A Digital Object is stored on a Technical Service, e.g. repository or server.")
                 .range(technicalService).create();
+
+        /* LRM relations */
+        executes = new RelationBuilder(this, "executes", ecosystemAgent).range(ecosystemActivity)
+                .superRelation(LRM_dynamic_schema.executes)
+                .comment("An agent executes an activity or a process.").create();
     }
 }

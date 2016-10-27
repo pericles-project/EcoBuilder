@@ -39,9 +39,7 @@ public class ScenarioModel extends AbstractModel {
 
     public ScenarioModel(Set<AbstractModel> toBeImported) {
         super(ScenarioModel.PREFIX, ScenarioModel.DESCRIPTION);
-        for (AbstractModel model : toBeImported) {
-            importModel(model);
-        }
+        toBeImported.forEach(this::importModel);
     }
 
     /**
