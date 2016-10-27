@@ -1,7 +1,10 @@
 package experiments;
 
 import LRMv2.LRM_dynamic_schema;
+import com.hp.hpl.jena.datatypes.RDFDatatype;
+import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
 import com.hp.hpl.jena.ontology.OntProperty;
+import com.hp.hpl.jena.rdf.model.ResourceFactory;
 import entities.*;
 import models.AbstractModel;
 
@@ -71,32 +74,31 @@ public class SpacePolicyChangeExample extends Experiment {
         // Create a few dummy DO instances
         OntProperty releaseState = scenario.model.createOntProperty("http://www.pericles-project.eu/ns/DEM-Scenario#releaseState");
         OntProperty dateCreated = scenario.model.createOntProperty("http://www.pericles-project.eu/ns/DEM-Scenario#dateCreated");
-
         ZonedDateTime creationDate = ZonedDateTime.ofInstant(new Date().toInstant(), ZoneId.of("UTC"));
         DateTimeFormatter DATEFORMAT = ofPattern("yyyy-MM-dd'T'HH:mm:ssX");
 
         DigitalObject dummy1 = new DigitalObject(scenario, "SEVIRI Image 1");
         dummy1.partOf(seviriImages);
         dummy1.addProperty(releaseState, "private");
-        dummy1.addProperty(dateCreated, creationDate.format(DATEFORMAT));
+        dummy1.addProperty(dateCreated, ResourceFactory.createTypedLiteral(creationDate.format(DATEFORMAT), XSDDatatype.XSDdateTime));
 
         creationDate=creationDate.plusHours(2);
         DigitalObject dummy2 = new DigitalObject(scenario, "SEVIRI Image 2");
         dummy2.partOf(seviriImages);
         dummy2.addProperty(releaseState, "private");
-        dummy2.addProperty(dateCreated, creationDate.format(DATEFORMAT));
+        dummy2.addProperty(dateCreated, ResourceFactory.createTypedLiteral(creationDate.format(DATEFORMAT), XSDDatatype.XSDdateTime));
         creationDate=creationDate.plusHours(2);
 
         DigitalObject dummy3 = new DigitalObject(scenario, "SEVIRI Image 3");
         dummy3.partOf(seviriImages);
         dummy3.addProperty(releaseState, "public");
-        dummy3.addProperty(dateCreated, creationDate.format(DATEFORMAT));
+        dummy3.addProperty(dateCreated, ResourceFactory.createTypedLiteral(creationDate.format(DATEFORMAT), XSDDatatype.XSDdateTime));
         creationDate=creationDate.plusHours(2);
 
         DigitalObject dummy4 = new DigitalObject(scenario, "SEVIRI Image 4");
         dummy4.partOf(seviriImages);
         dummy4.addProperty(releaseState, "public");
-        dummy4.addProperty(dateCreated, creationDate.format(DATEFORMAT));
+        dummy4.addProperty(dateCreated, ResourceFactory.createTypedLiteral(creationDate.format(DATEFORMAT), XSDDatatype.XSDdateTime));
 
 
     }
