@@ -125,7 +125,6 @@ public class EntityView extends GridPane implements Serializable {
                 // If there is a relation of this type, check if the target is already there --> then return
                 for (TargetEntityView targetEntityView : relationView.childTargetEntities) {
                     if (targetEntityView.sameEntity == target) {
-                        System.out.println("This relation already exists.");
                         return;
                     }
                 }

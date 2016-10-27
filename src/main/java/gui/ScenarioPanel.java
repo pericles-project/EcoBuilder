@@ -40,25 +40,25 @@ import java.util.stream.Collectors;
  */
 public class ScenarioPanel extends GridPane implements Serializable {
     transient public final EcoBuilder ecoBuilder;
-    transient private final Text title = new Text("Scenario Model");
-    private final ModelView scenarioModel;
+    transient private final ModelView scenarioModel;
+    transient public Set<AbstractModel> toBeImported = new HashSet<>();
+    transient private Button addDVA = new Button("Import DVA ontology");
     public final Set<ModelView> models = new HashSet<>();
     public final Set<CustomTemplateView> customTemplates = new HashSet<>();
     public final Set<CustomRelation> customRelations = new HashSet<>();
-    public Set<AbstractModel> toBeImported = new HashSet<>();
-    private transient TextArea dvaLabel = new TextArea("The Digital Video Artwork (DVA) ontology introduces concepts for modelling video artworks." +
-            "Importing the DVA ontology introduces new relations also for existing entities:");
-    private transient Button addDVA = new Button("Import DVA ontology");
     public boolean addedDVA = false;
 
     public ScenarioPanel(EcoBuilder ecoBuilder) {
         this.ecoBuilder = ecoBuilder;
         addDVA.setOnAction(e -> addDVA());
+        TextArea dvaLabel = new TextArea("The Digital Video Artwork (DVA) ontology introduces concepts for modelling video artworks." +
+                "Importing the DVA ontology introduces new relations also for existing entities:");
         dvaLabel.setEditable(false);
         dvaLabel.setMaxHeight(60);
         dvaLabel.setPrefHeight(60);
         dvaLabel.setWrapText(true);
         setId(EcoBuilder.SCENARIO_ID);
+        Text title = new Text("Scenario Model");
         title.setId(EcoBuilder.TITLE_ID);
         getStyleClass().add(EcoBuilder.PANE);
         setConstraints(title, 0, 0);
@@ -140,8 +140,7 @@ public class ScenarioPanel extends GridPane implements Serializable {
         addedDVA = true;
         DEMModelView dvaModel = new DEMModelView(DEM.DVA_MODEL, this);
         models.add(dvaModel);
-        int i = getChildren().indexOf(addDVA);
-        setConstraints(dvaModel, 0, i);
+        setConstraints(dvaModel, 0, 9);
         getChildren().remove(addDVA);
         getChildren().add(dvaModel);
         transferRelationDomains();
@@ -190,6 +189,7 @@ public class ScenarioPanel extends GridPane implements Serializable {
     public EntityView getEntity(String templateName, String entityName) {
         TemplateView templateView = getTemplateView(templateName);
         if (templateView == null) {
+            System.err.println("Error at ScenarioPanel#getEntity: templateView null.");
             return null;
         }
         for (EntityView entity : templateView.childEntities) {
@@ -197,6 +197,7 @@ public class ScenarioPanel extends GridPane implements Serializable {
                 return entity;
             }
         }
+        System.err.println("Error at ScenarioPanel#getEntity: null");
         return null;
     }
 

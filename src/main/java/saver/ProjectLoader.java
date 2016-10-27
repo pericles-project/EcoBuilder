@@ -37,12 +37,6 @@ public class ProjectLoader {
         this.ecoBuilder = ecoBuilder;
     }
 
-    public File openDialog() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Project File");
-        return fileChooser.showOpenDialog(new Stage());
-    }
-
     /**
      * Loads the saved project from a file.
      */
@@ -56,6 +50,7 @@ public class ProjectLoader {
             inputStream = new FileInputStream(projectFile);
             ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
             ScenarioPanel savedScenario = (ScenarioPanel) objectInputStream.readObject();
+            cleanModels();
             loadProject(savedScenario);
         } catch (IOException | ClassNotFoundException e) {
             System.err.println("Cannot load this file!");
@@ -70,60 +65,72 @@ public class ProjectLoader {
         }
     }
 
+    private File openDialog() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Project File");
+        return fileChooser.showOpenDialog(new Stage());
+    }
+
+    /**
+     * Cleans the currently loaded models, to prepare them for loading the saved entities.
+     */
+    private void cleanModels() {
+        for (ModelView model : ecoBuilder.scenarioPane.models) {
+            for (RadioTemplate radioTemplate : model.childTemplateViews) {
+                radioTemplate.templateView.childEntities.clear();
+                radioTemplate.setSelected(false);
+                radioTemplate.selected = false;
+            }
+        }
+    }
+
     /**
      * Loads the saved scenario from a de-serialised {@link ScenarioPanel}.
      */
     private void loadProject(ScenarioPanel scenario) {
-        if (scenario.addedDVA) {
-            ecoBuilder.scenarioPane.addDVA();
-        }
-        ModelView scenarioSourceModel = null;
-        for (ModelView savedModel : scenario.models) {
-            if (savedModel instanceof DEMModelView) {
-                ecoBuilder.scenarioPane.models.stream()
-                        .filter(destinationModel -> savedModel.prefix.equals(destinationModel.prefix))
-                        .forEach(destinationModel -> {
-                            cleanModel(destinationModel);
-                            loadModel(destinationModel, savedModel);
-                        });
-            } else {
-                scenarioSourceModel = savedModel;
-            }
-        }
-        if (scenarioSourceModel != null) {
-            loadScenarioModel(scenarioSourceModel);
-        }
+        loadDVAModelImport(scenario);
+        loadModels(scenario);
         loadCustomRelations(scenario);
-        loadEntityTargets(scenario);
+        loadRelations(scenario);
     }
 
-    private void loadCustomRelations(ScenarioPanel sourceScenario) {
-        for (CustomRelation sourceRelation : sourceScenario.customRelations) {
-            Set<TemplateView> domains = new HashSet<>();
-            Set<TemplateView> ranges = new HashSet<>();
-            for (TemplateView range : sourceRelation.getParentRanges()) {
-                String rangeName = range.name;
-                ranges.add(ecoBuilder.scenarioPane.getTemplateView(rangeName));
-            }
-            for (TemplateView domain : sourceRelation.getParentDomains()) {
-                String domainName = domain.name;
-                domains.add(ecoBuilder.scenarioPane.getTemplateView(domainName));
-            }
-            CustomRelation destinationRelation = new CustomRelation(sourceRelation.name, sourceRelation.description, domains, ranges);
-            ecoBuilder.scenarioPane.customRelations.add(destinationRelation);
+    /**
+     * Was the DVA Model imported? If yes, then import it at the loaded scenario.
+     *
+     * @param scenario
+     */
+    private void loadDVAModelImport(ScenarioPanel scenario) {
+        if (scenario.addedDVA) {
+            ecoBuilder.scenarioPane.addDVA();
         }
     }
 
     /**
-     * Cleans the currently loaded model, to prepare it for loading the saved entities into it.
+     * Load all models.
      *
-     * @param model to be cleared
+     * @param scenario
      */
-    private void cleanModel(ModelView model) {
-        for (RadioTemplate template : model.childTemplateViews) {
-            template.templateView.childEntities.clear();
-            template.setSelected(false);
+    private void loadModels(ScenarioPanel scenario) {
+        for (ModelView savedModel : scenario.models) {
+            if (savedModel instanceof DEMModelView) {
+                loadDEMModel((DEMModelView) savedModel);
+            } else {
+                loadScenarioModel(savedModel);
+            }
         }
+    }
+
+    /**
+     * Load the models that are part of the DEM.
+     *
+     * @param savedModel
+     */
+    private void loadDEMModel(DEMModelView savedModel) {
+        ecoBuilder.scenarioPane.models.stream()
+                .filter(destinationModel -> savedModel.prefix.equals(destinationModel.prefix))
+                .forEach(destinationModel -> {
+                    loadDEMModel((DEMModelView) destinationModel, savedModel);
+                });
     }
 
     /**
@@ -133,14 +140,12 @@ public class ProjectLoader {
      * @param destination The model to be loaded
      * @param source      The saved model from the file
      */
-    private void loadModel(ModelView destination, ModelView source) {
-        for (RadioTemplate sourceRadioTemplate : source.childTemplateViews) {
+    private void loadDEMModel(DEMModelView destination, DEMModelView source) {
+        source.childTemplateViews.stream().filter(sourceRadioTemplate -> sourceRadioTemplate.selected || sourceRadioTemplate.isSelected()).forEach(sourceRadioTemplate -> {
             RadioTemplate destinationRadioTemplate = destination.getRadioTemplate(sourceRadioTemplate.templateView.name);
-            if (sourceRadioTemplate.selected) {
-                destination.useTemplateView(destinationRadioTemplate.templateView);
-                loadTemplateView(destinationRadioTemplate.templateView, sourceRadioTemplate.templateView);
-            }
-        }
+            destination.useTemplateView(destinationRadioTemplate.templateView);
+            loadTemplateView(destinationRadioTemplate.templateView, sourceRadioTemplate.templateView);
+        });
     }
 
     /**
@@ -188,7 +193,24 @@ public class ProjectLoader {
                 Relation relation = ecoBuilder.scenarioPane.getRelation(sourceRelation.relation.name);
                 destinationEntity.addValueRelation(relation, sourceTarget.value);
             }
-            // Note that the entity target relations are created after all models are loaded! Therefore not here! See: loadEntityTargets()
+            // Note that the entity target relations are created after all models are loaded! Therefore not here! See: loadRelations()
+        }
+    }
+
+    private void loadCustomRelations(ScenarioPanel sourceScenario) {
+        for (CustomRelation sourceRelation : sourceScenario.customRelations) {
+            Set<TemplateView> domains = new HashSet<>();
+            Set<TemplateView> ranges = new HashSet<>();
+            for (TemplateView range : sourceRelation.getParentRanges()) {
+                String rangeName = range.name;
+                ranges.add(ecoBuilder.scenarioPane.getTemplateView(rangeName));
+            }
+            for (TemplateView domain : sourceRelation.getParentDomains()) {
+                String domainName = domain.name;
+                domains.add(ecoBuilder.scenarioPane.getTemplateView(domainName));
+            }
+            CustomRelation destinationRelation = new CustomRelation(sourceRelation.name, sourceRelation.description, domains, ranges);
+            ecoBuilder.scenarioPane.customRelations.add(destinationRelation);
         }
     }
 
@@ -199,14 +221,14 @@ public class ProjectLoader {
      *
      * @param sourceScenario
      */
-    private void loadEntityTargets(ScenarioPanel sourceScenario) {
+    private void loadRelations(ScenarioPanel sourceScenario) {
         for (ModelView sourceModel : sourceScenario.models) {
             for (RadioTemplate sourceRadioTemplate : sourceModel.childTemplateViews) {
                 for (EntityView sourceEntity : sourceRadioTemplate.templateView.childEntities) {
                     for (RelationView sourceRelation : sourceEntity.childRelations) {
                         for (TargetEntityView sourceTarget : sourceRelation.childTargetEntities) {
                             Relation relation = ecoBuilder.scenarioPane.getRelation(sourceRelation.relation.name);
-                            loadEntityTarget(relation, sourceEntity, sourceTarget);
+                            loadRelation(relation, sourceEntity, sourceTarget);
                         }
                     }
                 }
@@ -214,9 +236,13 @@ public class ProjectLoader {
         }
     }
 
-    private void loadEntityTarget(Relation relation, EntityView sourceEntity, TargetEntityView sourceTarget) {
+    private void loadRelation(Relation relation, EntityView sourceEntity, TargetEntityView sourceTarget) {
         EntityView subject = ecoBuilder.scenarioPane.getEntity(sourceEntity.parentTemplate.name, sourceEntity.name);
         EntityView object = ecoBuilder.scenarioPane.getEntity(sourceTarget.sameEntity.parentTemplate.name, sourceTarget.sameEntity.name);
+        if (subject == null || object == null || relation == null) {
+            System.err.println("Error: Create relation [" + subject + ", " + relation + ", " + object + "]");
+            return;
+        }
         subject.addRelationTarget(relation, object);
     }
 }

@@ -34,7 +34,7 @@ public class ModelView extends GridPane implements Serializable {
     public Set<RadioTemplate> childTemplateViews = new HashSet<>();
     public String prefix;
     transient protected String description;
-    protected transient int templateIndex = 1;
+    transient protected int templateIndex = 1;
 
     public ModelView(ScenarioPanel scenario, String prefix, String description) {
         this.scenario = scenario;
@@ -63,8 +63,9 @@ public class ModelView extends GridPane implements Serializable {
     /**
      * The model view manages a {@link RadioTemplate} for each available template of the model. They manage which
      * templates are used in a given scenario.
-     *
+     * <p>
      * This method will return the corresponding radio template with the given name.
+     *
      * @param name Name of the template
      * @return
      */
@@ -77,25 +78,17 @@ public class ModelView extends GridPane implements Serializable {
         return null;
     }
 
-    /**
-     * The {@link RadioTemplate} radio button of a template was selected at the model configuration panel to load the
-     * template into the scenario panel for the creation of entities.
-     *
-     * @param templateView
-     */
-    public RadioTemplate useTemplateView(TemplateView templateView) {
+    public void useTemplateView(TemplateView templateView) {
+        RadioTemplate radioTemplate = getRadioTemplate(templateView.name);
+        if (!radioTemplate.isSelected()) {
+            radioTemplate.setSelected(true);
+            radioTemplate.selected = true;
+        }
         if (!getChildren().contains(templateView)) {
             setConstraints(templateView, 0, templateIndex);
             getChildren().add(templateView);
             templateIndex++;
         }
-        for (RadioTemplate radioTemplate : childTemplateViews) {
-            if (radioTemplate.templateView == templateView) {
-                radioTemplate.setSelected(true);
-                return radioTemplate;
-            }
-        }
-        return null;
     }
 
     /**
