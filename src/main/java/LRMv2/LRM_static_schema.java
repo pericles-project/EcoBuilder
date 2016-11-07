@@ -17,14 +17,13 @@
  */
 package LRMv2;
 
-import com.hp.hpl.jena.ontology.OntClass;
-import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.ontology.OntModelSpec;
-import com.hp.hpl.jena.ontology.OntProperty;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.rdf.model.Property;
-import com.hp.hpl.jena.rdf.model.Resource;
 import models.AbstractModel;
+import org.apache.jena.ontology.OntClass;
+import org.apache.jena.ontology.OntModel;
+import org.apache.jena.ontology.OntModelSpec;
+import org.apache.jena.ontology.OntProperty;
+import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.Property;
 
 /**
  * Vocabulary definitions from LRM-static-schema.ttl
@@ -36,6 +35,7 @@ public class LRM_static_schema extends AbstractModel {
     public LRM_static_schema() {
         super(NS, "LRM", "The static Linked Resource Model");
         this.model = m_model;
+        m_model.createResource(NS);
     }
 
     /**
@@ -63,12 +63,6 @@ public class LRM_static_schema extends AbstractModel {
         return NS;
     }
 
-    /**
-     * <p>
-     * The namespace of the vocabulary as a resource
-     * </p>
-     */
-    public static final Resource NAMESPACE = m_model.createResource(NS);
 
     public static final OntProperty accessProtocol = m_model
             .createOntProperty("http://xrce.xerox.com/LRM#accessProtocol");

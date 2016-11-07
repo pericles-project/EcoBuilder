@@ -18,9 +18,9 @@
 package entities;
 
 import LRMv2.LRM_static_schema;
-import com.hp.hpl.jena.rdf.model.Resource;
 import models.AnalysisModel;
 import models.ScenarioModel;
+import org.apache.jena.rdf.model.Resource;
 
 /**
  * A weighted relation which expresses the significance of an Ecosystem Entity for an other Ecosystem Entity, e.g. for

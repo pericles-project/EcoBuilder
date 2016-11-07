@@ -18,7 +18,6 @@
 package models;
 
 import LRMv2.LRM_static_schema;
-import com.hp.hpl.jena.vocabulary.RDF;
 import entities.AggregatedPolicy.AggregatedPolicyTemplate;
 import entities.*;
 import entities.ImplementationState.ImplementationStateTemplate;
@@ -26,6 +25,7 @@ import entities.MetaPolicy.MetaPolicyTemplate;
 import entities.PolicyStatement.PolicyStatementTemplate;
 import entities.QualityAssurance.QualityAssuranceTemplate;
 import entities.RequirementLevel.RequirementLevelTemplate;
+import org.apache.jena.vocabulary.RDF;
 import relations.DEMRelation;
 import relations.RelationBuilder;
 

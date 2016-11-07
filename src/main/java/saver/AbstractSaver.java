@@ -17,11 +17,11 @@
  */
 package saver;
 
-import com.hp.hpl.jena.ontology.OntModel;
 import gui.EcoBuilder;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import models.CoreModel;
+import org.apache.jena.ontology.OntModel;
 
 import java.io.File;
 import java.io.FileNotFoundException;

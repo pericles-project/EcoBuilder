@@ -17,14 +17,11 @@
  */
 package DomainOntology;
 
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.sun.prism.j2d.paint.MultipleGradientPaint;
-import entities.EcosystemActivity;
-import entities.EcosystemAgent;
 import entities.Template;
 import models.*;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.Resource;
 import relations.DEMRelation;
 import relations.Relation;
 import relations.RelationBuilder;

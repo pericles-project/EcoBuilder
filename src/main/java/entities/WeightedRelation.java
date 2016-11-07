@@ -18,10 +18,10 @@
 package entities;
 
 import LRMv2.LRM_static_schema;
-import com.hp.hpl.jena.rdf.model.Resource;
 import models.AnalysisModel;
 import models.CoreModel;
 import models.ScenarioModel;
+import org.apache.jena.rdf.model.Resource;
 
 /**
  * This entity corresponds to a weighted edge in the graph. It can also be used to weight entities by pointing

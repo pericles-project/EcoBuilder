@@ -18,9 +18,9 @@
 package entities;
 
 import LRMv2.LRM_static_schema;
-import com.hp.hpl.jena.rdf.model.Resource;
 import models.AnalysisModel;
 import models.ScenarioModel;
+import org.apache.jena.rdf.model.Resource;
 
 /**
  * A dependency in the digital ecosystem.

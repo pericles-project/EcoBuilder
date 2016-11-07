@@ -17,9 +17,9 @@
  */
 package relations;
 
-import com.hp.hpl.jena.ontology.OntProperty;
-import com.hp.hpl.jena.rdf.model.Resource;
 import models.AbstractModel;
+import org.apache.jena.ontology.OntProperty;
+import org.apache.jena.rdf.model.Resource;
 
 import java.util.ArrayList;
 import java.util.List;

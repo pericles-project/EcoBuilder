@@ -19,11 +19,11 @@ package models;
 
 import LRMv2.LRM_dynamic_schema;
 import LRMv2.LRM_static_schema;
-import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.ontology.OntModelSpec;
-import com.hp.hpl.jena.ontology.Ontology;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
 import entities.Template;
+import org.apache.jena.ontology.OntModel;
+import org.apache.jena.ontology.OntModelSpec;
+import org.apache.jena.ontology.Ontology;
+import org.apache.jena.rdf.model.ModelFactory;
 import relations.Relation;
 
 import java.io.Serializable;

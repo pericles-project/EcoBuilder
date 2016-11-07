@@ -18,8 +18,8 @@
 package entities;
 
 import LRMv2.LRM_dynamic_schema;
-import com.hp.hpl.jena.rdf.model.Resource;
 import models.*;
+import org.apache.jena.rdf.model.Resource;
 
 /**
  * Entity in the Digital Ecosystem which represents processes.

@@ -17,13 +17,12 @@
  */
 package LRMv2;
 
-import com.hp.hpl.jena.ontology.OntClass;
-import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.ontology.OntModelSpec;
-import com.hp.hpl.jena.ontology.OntProperty;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.rdf.model.Resource;
 import models.AbstractModel;
+import org.apache.jena.ontology.OntClass;
+import org.apache.jena.ontology.OntModel;
+import org.apache.jena.ontology.OntModelSpec;
+import org.apache.jena.ontology.OntProperty;
+import org.apache.jena.rdf.model.ModelFactory;
 
 /**
  * Vocabulary definitions from LRM-dynamic-schema.ttl
@@ -35,6 +34,7 @@ public class LRM_dynamic_schema extends AbstractModel {
     public LRM_dynamic_schema() {
         super(NS, "LRM", "The dynamic Linked Resource Model");
         this.model = m_model;
+        m_model.createResource(NS);
     }
 
     /**
@@ -62,12 +62,6 @@ public class LRM_dynamic_schema extends AbstractModel {
         return NS;
     }
 
-    /**
-     * <p>
-     * The namespace of the vocabulary as a resource
-     * </p>
-     */
-    public static final Resource NAMESPACE = m_model.createResource(NS);
 
     public static final OntProperty activationTime = m_model
             .createOntProperty("http://xrce.xerox.com/LRM#activationTime");
