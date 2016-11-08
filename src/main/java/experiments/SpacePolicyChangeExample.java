@@ -5,14 +5,14 @@ import entities.*;
 import models.AbstractModel;
 import org.apache.jena.datatypes.xsd.XSDDatatype;
 import org.apache.jena.ontology.OntProperty;
-import org.apache.jena.rdf.model.ResourceFactory;
+import org.apache.jena.rdf.model.*;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
-import static java.time.format.DateTimeFormatter.ofPattern;
+import static java.time.format.DateTimeFormatter.*;
 
 /**
  * Created by Johannes on 12.10.16.
@@ -32,6 +32,14 @@ public class SpacePolicyChangeExample extends Experiment {
     private Significance mediumRisk06;
     public SpacePolicyChangeExample() {
         super("Space-policy-change-example");
+
+        // add the spin rule import
+        scenario.ontology.getModel().setNsPrefix("spin", "http://spinrdf.org/spin#");
+        Resource demScenario = scenario.ontology.getModel().createResource("http://www.pericles-project.eu/ns/DEM-Scenario#");
+        Property spinImports = scenario.ontology.getModel().createProperty("http://spinrdf.org/spin#imports");
+        RDFNode spinURL = scenario.ontology.getModel().createResource("http://topbraid.org/spin/owlrl-all");
+        Statement spin = scenario.ontology.getModel().createStatement(demScenario, spinImports, spinURL);
+        scenario.ontology.getModel().add(spin);
 
         // Entities EUMETSAT
         dataFormatPolicy = new Policy(scenario, "Data Format");
@@ -94,7 +102,6 @@ public class SpacePolicyChangeExample extends Experiment {
         dummy4.partOf(seviriImages);
         dummy4.addProperty(releaseState, "public");
         dummy4.addProperty(dateCreated, ResourceFactory.createTypedLiteral(creationDate.format(DATEFORMAT), XSDDatatype.XSDdateTime));
-
 
     }
 }
