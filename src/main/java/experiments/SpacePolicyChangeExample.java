@@ -25,6 +25,264 @@ import static java.time.format.DateTimeFormatter.*;
  */
 public class SpacePolicyChangeExample extends Experiment {
 
+    private static String SPINTEXT = "# baseURI: http://c102-086.cloud.gwdg.de/ns/spinrules\n" +
+            "# imports: http://c102-086.cloud.gwdg.de/ns/DEM-Scenario#\n" +
+            "# imports: http://spinrdf.org/spl\n" +
+            "\n" +
+            "@prefix : <http://c102-086.cloud.gwdg.de/ns/spinrules#> .\n" +
+            "@prefix DEM-Scenario: <http://c102-086.cloud.gwdg.de/ns/DEM-Scenario#> .\n" +
+            "@prefix arg: <http://spinrdf.org/arg#> .\n" +
+            "@prefix owl: <http://www.w3.org/2002/07/owl#> .\n" +
+            "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n" +
+            "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n" +
+            "@prefix sp: <http://spinrdf.org/sp#> .\n" +
+            "@prefix spin: <http://spinrdf.org/spin#> .\n" +
+            "@prefix spl: <http://spinrdf.org/spl#> .\n" +
+            "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n" +
+            "\n" +
+            "<http://c102-086.cloud.gwdg.de/ns/DEM-Core#DigitalObject>\n" +
+            "  spin:rule [\n" +
+            "      rdf:type sp:Construct ;\n" +
+            "      sp:templates (\n" +
+            "          [\n" +
+            "            sp:object [\n" +
+            "                sp:varName \"delta\" ;\n" +
+            "              ] ;\n" +
+            "            sp:predicate <http://c102-086.cloud.gwdg.de/ns/LRM#changedBy> ;\n" +
+            "            sp:subject [\n" +
+            "                sp:varName \"resource\" ;\n" +
+            "              ] ;\n" +
+            "          ]\n" +
+            "          [\n" +
+            "            sp:object <http://c102-086.cloud.gwdg.de/ns/LRM#RDF-Delta> ;\n" +
+            "            sp:predicate rdf:type ;\n" +
+            "            sp:subject [\n" +
+            "                sp:varName \"delta\" ;\n" +
+            "              ] ;\n" +
+            "          ]\n" +
+            "          [\n" +
+            "            sp:object [\n" +
+            "                sp:varName \"deletion_statement\" ;\n" +
+            "              ] ;\n" +
+            "            sp:predicate <http://c102-086.cloud.gwdg.de/ns/LRM#deletion> ;\n" +
+            "            sp:subject [\n" +
+            "                sp:varName \"delta\" ;\n" +
+            "              ] ;\n" +
+            "          ]\n" +
+            "          [\n" +
+            "            sp:object [\n" +
+            "                sp:varName \"insertion_statement\" ;\n" +
+            "              ] ;\n" +
+            "            sp:predicate <http://c102-086.cloud.gwdg.de/ns/LRM#insertion> ;\n" +
+            "            sp:subject [\n" +
+            "                sp:varName \"delta\" ;\n" +
+            "              ] ;\n" +
+            "          ]\n" +
+            "          [\n" +
+            "            sp:object rdf:Statement ;\n" +
+            "            sp:predicate rdf:type ;\n" +
+            "            sp:subject [\n" +
+            "                sp:varName \"deletion_statement\" ;\n" +
+            "              ] ;\n" +
+            "          ]\n" +
+            "          [\n" +
+            "            sp:object DEM-Scenario:releaseState ;\n" +
+            "            sp:predicate rdf:predicate ;\n" +
+            "            sp:subject [\n" +
+            "                sp:varName \"deletion_statement\" ;\n" +
+            "              ] ;\n" +
+            "          ]\n" +
+            "          [\n" +
+            "            sp:object [\n" +
+            "                sp:varName \"state\" ;\n" +
+            "              ] ;\n" +
+            "            sp:predicate rdf:object ;\n" +
+            "            sp:subject [\n" +
+            "                sp:varName \"deletion_statement\" ;\n" +
+            "              ] ;\n" +
+            "          ]\n" +
+            "          [\n" +
+            "            sp:object rdf:Statement ;\n" +
+            "            sp:predicate rdf:type ;\n" +
+            "            sp:subject [\n" +
+            "                sp:varName \"insertion_statement\" ;\n" +
+            "              ] ;\n" +
+            "          ]\n" +
+            "          [\n" +
+            "            sp:object DEM-Scenario:releaseState ;\n" +
+            "            sp:predicate rdf:predicate ;\n" +
+            "            sp:subject [\n" +
+            "                sp:varName \"insertion_statement\" ;\n" +
+            "              ] ;\n" +
+            "          ]\n" +
+            "          [\n" +
+            "            sp:object \"public\" ;\n" +
+            "            sp:predicate rdf:object ;\n" +
+            "            sp:subject [\n" +
+            "                sp:varName \"insertion_statement\" ;\n" +
+            "              ] ;\n" +
+            "          ]\n" +
+            "        ) ;\n" +
+            "      sp:where (\n" +
+            "          [\n" +
+            "            sp:object [\n" +
+            "                sp:varName \"state\" ;\n" +
+            "              ] ;\n" +
+            "            sp:predicate DEM-Scenario:releaseState ;\n" +
+            "            sp:subject [\n" +
+            "                sp:varName \"resource\" ;\n" +
+            "              ] ;\n" +
+            "          ]\n" +
+            "          [\n" +
+            "            rdf:type sp:Filter ;\n" +
+            "            sp:expression [\n" +
+            "                rdf:type sp:eq ;\n" +
+            "                sp:arg1 [\n" +
+            "                    sp:varName \"state\" ;\n" +
+            "                  ] ;\n" +
+            "                sp:arg2 \"private\" ;\n" +
+            "              ] ;\n" +
+            "          ]\n" +
+            "          [\n" +
+            "            sp:object <http://c102-086.cloud.gwdg.de/ns/DEM-Core#DigitalObject> ;\n" +
+            "            sp:predicate rdf:type ;\n" +
+            "            sp:subject [\n" +
+            "                sp:varName \"resource\" ;\n" +
+            "              ] ;\n" +
+            "          ]\n" +
+            "          [\n" +
+            "            sp:object [\n" +
+            "                sp:varName \"dateCreated\" ;\n" +
+            "              ] ;\n" +
+            "            sp:predicate DEM-Scenario:dateCreated ;\n" +
+            "            sp:subject [\n" +
+            "                sp:varName \"resource\" ;\n" +
+            "              ] ;\n" +
+            "          ]\n" +
+            "          [\n" +
+            "            sp:object <http://c102-086.cloud.gwdg.de/ns/DEM-Core#Policy> ;\n" +
+            "            sp:predicate rdf:type ;\n" +
+            "            sp:subject [\n" +
+            "                sp:varName \"policy\" ;\n" +
+            "              ] ;\n" +
+            "          ]\n" +
+            "          [\n" +
+            "            sp:object [\n" +
+            "                sp:varName \"hrs\" ;\n" +
+            "              ] ;\n" +
+            "            sp:predicate DEM-Scenario:Releasedatepolicytimebeforerelease ;\n" +
+            "            sp:subject [\n" +
+            "                sp:varName \"policy\" ;\n" +
+            "              ] ;\n" +
+            "          ]\n" +
+            "          [\n" +
+            "            rdf:type sp:Bind ;\n" +
+            "            sp:expression [\n" +
+            "                rdf:type sp:day ;\n" +
+            "                sp:arg1 [\n" +
+            "                    rdf:type sp:sub ;\n" +
+            "                    sp:arg1 [\n" +
+            "                        rdf:type sp:now ;\n" +
+            "                      ] ;\n" +
+            "                    sp:arg2 [\n" +
+            "                        sp:varName \"dateCreated\" ;\n" +
+            "                      ] ;\n" +
+            "                  ] ;\n" +
+            "              ] ;\n" +
+            "            sp:variable [\n" +
+            "                sp:varName \"days\" ;\n" +
+            "              ] ;\n" +
+            "          ]\n" +
+            "          [\n" +
+            "            rdf:type sp:Bind ;\n" +
+            "            sp:expression [\n" +
+            "                rdf:type sp:hours ;\n" +
+            "                sp:arg1 [\n" +
+            "                    rdf:type sp:sub ;\n" +
+            "                    sp:arg1 [\n" +
+            "                        rdf:type sp:now ;\n" +
+            "                      ] ;\n" +
+            "                    sp:arg2 [\n" +
+            "                        sp:varName \"dateCreated\" ;\n" +
+            "                      ] ;\n" +
+            "                  ] ;\n" +
+            "              ] ;\n" +
+            "            sp:variable [\n" +
+            "                sp:varName \"hours\" ;\n" +
+            "              ] ;\n" +
+            "          ]\n" +
+            "          [\n" +
+            "            rdf:type sp:Bind ;\n" +
+            "            sp:expression [\n" +
+            "                rdf:type sp:add ;\n" +
+            "                sp:arg1 [\n" +
+            "                    rdf:type sp:mul ;\n" +
+            "                    sp:arg1 [\n" +
+            "                        sp:varName \"days\" ;\n" +
+            "                      ] ;\n" +
+            "                    sp:arg2 24 ;\n" +
+            "                  ] ;\n" +
+            "                sp:arg2 [\n" +
+            "                    sp:varName \"hours\" ;\n" +
+            "                  ] ;\n" +
+            "              ] ;\n" +
+            "            sp:variable [\n" +
+            "                sp:varName \"ageInHours\" ;\n" +
+            "              ] ;\n" +
+            "          ]\n" +
+            "          [\n" +
+            "            rdf:type sp:Filter ;\n" +
+            "            sp:expression [\n" +
+            "                rdf:type sp:ge ;\n" +
+            "                sp:arg1 [\n" +
+            "                    sp:varName \"ageInHours\" ;\n" +
+            "                  ] ;\n" +
+            "                sp:arg2 [\n" +
+            "                    sp:varName \"hrs\" ;\n" +
+            "                  ] ;\n" +
+            "              ] ;\n" +
+            "          ]\n" +
+            "          [\n" +
+            "            rdf:type sp:Bind ;\n" +
+            "            sp:expression [\n" +
+            "                rdf:type sp:bnode ;\n" +
+            "              ] ;\n" +
+            "            sp:variable [\n" +
+            "                sp:varName \"delta\" ;\n" +
+            "              ] ;\n" +
+            "          ]\n" +
+            "          [\n" +
+            "            rdf:type sp:Bind ;\n" +
+            "            sp:expression [\n" +
+            "                rdf:type sp:bnode ;\n" +
+            "              ] ;\n" +
+            "            sp:variable [\n" +
+            "                sp:varName \"deletion_statement\" ;\n" +
+            "              ] ;\n" +
+            "          ]\n" +
+            "          [\n" +
+            "            rdf:type sp:Bind ;\n" +
+            "            sp:expression [\n" +
+            "                rdf:type sp:bnode ;\n" +
+            "              ] ;\n" +
+            "            sp:variable [\n" +
+            "                sp:varName \"insertion_statement\" ;\n" +
+            "              ] ;\n" +
+            "          ]\n" +
+            "        ) ;\n" +
+            "    ] ;\n" +
+            ".\n" +
+            "<http://c102-086.cloud.gwdg.de/ns/spinrules>\n" +
+            "  rdf:type owl:Ontology ;\n" +
+            "  spin:imports <http://topbraid.org/spin/owlrl-all> ;\n" +
+            "  owl:imports DEM-Scenario: ;\n" +
+            "  owl:imports <http://spinrdf.org/spl> ;\n" +
+            "  owl:versionInfo \"Created with TopBraid Composer\" ;\n" +
+            ".\n" +
+            "spin:rule\n" +
+            "  spin:rulePropertyMaxIterationCount 1 ;\n" +
+            ".\n";
+
     private Policy dataFormatPolicy;
     private Policy dataReleasePolicy;
     private ServiceInterface webPortal;
@@ -50,7 +308,7 @@ public class SpacePolicyChangeExample extends Experiment {
                 "and graphical form via the associated operational service in formats which represent both full and partial spatial coverage as well as both full " +
                 "and partial spatial resolution", "Natural language","en.uk");
         dataReleasePolicy.addStatement("Meteosat Data and Derived Products older than (time_before_release) hours are distributed on request [...] as both full and partial spatial resolution","Natural Language", "en/uk");
-        dataReleasePolicy.addStatement("executable SPIN-Rule text here, TODO", "SPIN");// TODO: add SPIN rule here
+        dataReleasePolicy.addStatement(SPINTEXT, "SPIN");// TODO: add SPIN rule here
         dataReleasePolicy.hasRequirementsLevel(RequirementLevel.ReqLevel.MUST);
         dataReleasePolicy.hasType(Policy.TypeOfPolicy.MANDATORY);
         dataReleasePolicy.addProperty(dataReleasePolicy.getOntModel().createOntProperty(dataReleasePolicy.getURI()+ AbstractModel.sanitizeName("time_before_release")),"24");
