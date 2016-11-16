@@ -72,4 +72,11 @@ public class Configuration {
     private static boolean empty(String string) {
         return string == null || string.equals("") || string.equals(" ");
     }
+
+    public static void setCredentials(String ERMRRepository, String ERMRUrl, String ERMRUser, String ERMRPassword) {
+        repository = ERMRRepository;
+        url = ERMRUrl;
+        user = ERMRUser;
+        password = ERMRPassword;
+    }
 }
