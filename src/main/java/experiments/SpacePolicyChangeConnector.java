@@ -46,14 +46,14 @@ public class SpacePolicyChangeConnector {
         }
         // this is a ugly hack to temporary replace the name space
         String output = outputWriter.toString();
-        output = "# baseURI: "+namespace+"ns/DEM-Scenario#\n" +
-                "# imports: "+namespace+"ns/DEM-Analysis#\n" +
-                "# imports: "+namespace+"ns/DEM-Core#\n" +
-                "# imports: "+namespace+"ns/DEM-Infrastructure#\n" +
-                "# imports: "+namespace+"ns/DEM-Policy#\n" +
-                "# imports: "+namespace+"ns/LRM#\n\n" + output;
-        output = output.replace("http://www.pericles-project.eu/", namespace);
-        output = output.replace("http://xrce.xerox.com/", namespace+"ns/");
+//        output = "# baseURI: "+namespace+"ns/DEM-Scenario#\n" +
+//                "# imports: "+namespace+"ns/DEM-Analysis#\n" +
+//                "# imports: "+namespace+"ns/DEM-Core#\n" +
+//                "# imports: "+namespace+"ns/DEM-Infrastructure#\n" +
+//                "# imports: "+namespace+"ns/DEM-Policy#\n" +
+//                "# imports: "+namespace+"ns/LRM#\n\n" + output;
+//        output = output.replace("http://www.pericles-project.eu/", namespace);
+//        output = output.replace("http://xrce.xerox.com/", namespace+"ns/");
         // Somehow Jena seems to leave in the escape characters from Strings so the text stays \" instead of ".
         // this is an ugly hack to fix the Strings.
         output = output.replace("\\\"", "\"");
