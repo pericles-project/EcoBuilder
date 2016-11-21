@@ -51,9 +51,8 @@ public class SpacePolicyChangeConnector {
                 "# imports: "+namespace+"ns/DEM-Core#\n" +
                 "# imports: "+namespace+"ns/DEM-Infrastructure#\n" +
                 "# imports: "+namespace+"ns/DEM-Policy#\n" +
-                "# imports: "+namespace+"ns/LRM#\n\n" + output;
+                "# imports: http://xrce.xerox.com/ns/LRM#\n\n" + output;
         output = output.replace("http://www.pericles-project.eu/", namespace);
-        output = output.replace("http://xrce.xerox.com/", namespace+"ns/");
         // Somehow Jena seems to leave in the escape characters from Strings so the text stays \" instead of ".
         // this is an ugly hack to fix the Strings.
         output = output.replace("\\\"", "\"");
@@ -90,7 +89,7 @@ public class SpacePolicyChangeConnector {
             System.out.println("Error! no parameter given or wrong number of arguments.");
             System.out.println("Usage: java experiments.SpacePolicyChangeConnector PATH ERMR_URL ERMR_REPOSIORY_NAME ERMR_USERNAME ERMR_PASSWWORD");
             System.out.println("PATH is the path where the output file is saved - please add a trailing slash, ERMR_URL is the URL to ERMR, " +
-                    "ERMR_REPOSIORY is the name of the repository where the triples are stored, ERMR_USERNAME and ERMR_PASSWORD is a valid ERMR user.");
+                    "ERMR_REPOSITORY is the name of the repository where the triples are stored, ERMR_USERNAME and ERMR_PASSWORD is a valid ERMR user.");
             System.exit(1);
         } else {
             new SpacePolicyChangeConnector(args[0], args[1], args[2], args[3], args[4]);
