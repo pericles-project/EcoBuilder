@@ -25,12 +25,12 @@ import static java.time.format.DateTimeFormatter.*;
  *
  */
 public class SpacePolicyChangeExample extends Experiment {
-    private static String SPINTEXT = "# baseURI: http://c102-086.cloud.gwdg.de/ns/spinrules\n" +
-            "# imports: http://c102-086.cloud.gwdg.de/ns/DEM-Scenario#\n" +
+    private static String SPINTEXT = "# baseURI: http://www.pericles-project.eu/ns/spinrules\n" +
+            "# imports: http://www.pericles-project.eu/ns/DEM-Scenario#\n" +
             "# imports: http://spinrdf.org/spl\n" +
             "\n" +
-            "@prefix : <http://c102-086.cloud.gwdg.de/ns/spinrules#> .\n" +
-            "@prefix DEM-Scenario: <http://c102-086.cloud.gwdg.de/ns/DEM-Scenario#> .\n" +
+            "@prefix : <http://www.pericles-project.eu/ns/spinrules#> .\n" +
+            "@prefix DEM-Scenario: <http://www.pericles-project.eu/ns/DEM-Scenario#> .\n" +
             "@prefix arg: <http://spinrdf.org/arg#> .\n" +
             "@prefix owl: <http://www.w3.org/2002/07/owl#> .\n" +
             "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n" +
@@ -40,7 +40,7 @@ public class SpacePolicyChangeExample extends Experiment {
             "@prefix spl: <http://spinrdf.org/spl#> .\n" +
             "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n" +
             "\n" +
-            "<http://c102-086.cloud.gwdg.de/ns/DEM-Core#DigitalObject>\n" +
+            "<http://www.pericles-project.eu/ns/DEM-Core#DigitalObject>\n" +
             "  spin:rule [\n" +
             "      rdf:type sp:Construct ;\n" +
             "      sp:templates (\n" +
@@ -48,13 +48,13 @@ public class SpacePolicyChangeExample extends Experiment {
             "            sp:object [\n" +
             "                sp:varName \"delta\" ;\n" +
             "              ] ;\n" +
-            "            sp:predicate <http://c102-086.cloud.gwdg.de/ns/LRM#changedBy> ;\n" +
+            "            sp:predicate <http://www.pericles-project.eu/ns/LRM#changedBy> ;\n" +
             "            sp:subject [\n" +
             "                sp:varName \"resource\" ;\n" +
             "              ] ;\n" +
             "          ]\n" +
             "          [\n" +
-            "            sp:object <http://c102-086.cloud.gwdg.de/ns/LRM#RDF-Delta> ;\n" +
+            "            sp:object <http://www.pericles-project.eu/ns/LRM#RDF-Delta> ;\n" +
             "            sp:predicate rdf:type ;\n" +
             "            sp:subject [\n" +
             "                sp:varName \"delta\" ;\n" +
@@ -64,7 +64,7 @@ public class SpacePolicyChangeExample extends Experiment {
             "            sp:object [\n" +
             "                sp:varName \"deletion_statement\" ;\n" +
             "              ] ;\n" +
-            "            sp:predicate <http://c102-086.cloud.gwdg.de/ns/LRM#deletion> ;\n" +
+            "            sp:predicate <http://www.pericles-project.eu/ns/LRM#deletion> ;\n" +
             "            sp:subject [\n" +
             "                sp:varName \"delta\" ;\n" +
             "              ] ;\n" +
@@ -73,7 +73,7 @@ public class SpacePolicyChangeExample extends Experiment {
             "            sp:object [\n" +
             "                sp:varName \"insertion_statement\" ;\n" +
             "              ] ;\n" +
-            "            sp:predicate <http://c102-086.cloud.gwdg.de/ns/LRM#insertion> ;\n" +
+            "            sp:predicate <http://www.pericles-project.eu/ns/LRM#insertion> ;\n" +
             "            sp:subject [\n" +
             "                sp:varName \"delta\" ;\n" +
             "              ] ;\n" +
@@ -144,7 +144,7 @@ public class SpacePolicyChangeExample extends Experiment {
             "              ] ;\n" +
             "          ]\n" +
             "          [\n" +
-            "            sp:object <http://c102-086.cloud.gwdg.de/ns/DEM-Core#DigitalObject> ;\n" +
+            "            sp:object <http://www.pericles-project.eu/ns/DEM-Core#DigitalObject> ;\n" +
             "            sp:predicate rdf:type ;\n" +
             "            sp:subject [\n" +
             "                sp:varName \"resource\" ;\n" +
@@ -160,7 +160,7 @@ public class SpacePolicyChangeExample extends Experiment {
             "              ] ;\n" +
             "          ]\n" +
             "          [\n" +
-            "            sp:object <http://c102-086.cloud.gwdg.de/ns/DEM-Core#Policy> ;\n" +
+            "            sp:object <http://www.pericles-project.eu/ns/DEM-Core#Policy> ;\n" +
             "            sp:predicate rdf:type ;\n" +
             "            sp:subject [\n" +
             "                sp:varName \"policy\" ;\n" +
@@ -272,7 +272,7 @@ public class SpacePolicyChangeExample extends Experiment {
             "        ) ;\n" +
             "    ] ;\n" +
             ".\n" +
-            "<http://c102-086.cloud.gwdg.de/ns/spinrules>\n" +
+            "<http://www.pericles-project.eu/ns/spinrules>\n" +
             "  rdf:type owl:Ontology ;\n" +
             "  spin:imports <http://topbraid.org/spin/owlrl-all> ;\n" +
             "  owl:imports DEM-Scenario: ;\n" +
@@ -314,7 +314,7 @@ public class SpacePolicyChangeExample extends Experiment {
                 "and graphical form via the associated operational service in formats which represent both full and partial spatial coverage as well as both full " +
                 "and partial spatial resolution.");
 
-        dataReleaseStatement.language("Natural language");
+        dataReleaseStatement.language("non-formal");
         dataReleaseStatement.format("en.uk");
         dataReleaseStatement.isStatementOf(dataReleasePolicy);
 
@@ -323,8 +323,8 @@ public class SpacePolicyChangeExample extends Experiment {
         //        "and partial spatial resolution", "Natural language","en.uk");
         PolicyStatement dataReleaseStatementGeneral = new PolicyStatement(scenario, "Meteosat_General");
         dataReleaseStatementGeneral.addProperty(LRM_static_schema.definition, "Meteosat Data and Derived Products older than (time_before_release) hours are distributed on request [...] as both full and partial spatial resolution");
-        dataReleaseStatementGeneral.language("Natural language");
-        dataReleaseStatementGeneral.format("en/uk");
+        dataReleaseStatementGeneral.language("en.uk");
+        dataReleaseStatementGeneral.format("non-formal");
         dataReleaseStatementGeneral.isStatementOf(dataReleasePolicy);
 
 
@@ -333,6 +333,7 @@ public class SpacePolicyChangeExample extends Experiment {
 
         PolicyStatement dataReleaseSPIN = new PolicyStatement(scenario, "SPIN_RULE");
         dataReleaseSPIN.language("SPIN");
+        dataReleaseSPIN.format("formal");
         dataReleaseSPIN.addProperty(LRM_static_schema.definition, SPINTEXT);
         dataReleaseSPIN.isStatementOf(dataReleasePolicy);
 

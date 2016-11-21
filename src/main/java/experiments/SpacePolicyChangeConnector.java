@@ -17,9 +17,6 @@ import java.io.*;
  */
 public class SpacePolicyChangeConnector {
     Experiment spaceExperiment;
-    // Default http://www.pericles-project.eu/ns/
-    // this is a temporary solution to place the ontology files for this experiment on an arbitary server
-    private String namespace = "http://c102-086.cloud.gwdg.de/";
     // the path where the model shoud be saved
     private String path = "/tmp/";
     private String ermrURL;
@@ -40,19 +37,11 @@ public class SpacePolicyChangeConnector {
         System.out.println("Saving model to " + turtleFile.getAbsolutePath());
         StringWriter outputWriter = new StringWriter();
         try {
-            spaceExperiment.scenario.model.write(outputWriter, "TURTLE", namespace);
+            spaceExperiment.scenario.model.write(outputWriter, "TURTLE", "http://www.pericles-project.eu/ns");
         } catch (Exception e1) {
             e1.printStackTrace();
         }
-        // this is a ugly hack to temporary replace the name space
         String output = outputWriter.toString();
-        output = "# baseURI: "+namespace+"ns/DEM-Scenario#\n" +
-                "# imports: "+namespace+"ns/DEM-Analysis#\n" +
-                "# imports: "+namespace+"ns/DEM-Core#\n" +
-                "# imports: "+namespace+"ns/DEM-Infrastructure#\n" +
-                "# imports: "+namespace+"ns/DEM-Policy#\n" +
-                "# imports: http://xrce.xerox.com/ns/LRM#\n\n" + output;
-        output = output.replace("http://www.pericles-project.eu/", namespace);
         // Somehow Jena seems to leave in the escape characters from Strings so the text stays \" instead of ".
         // this is an ugly hack to fix the Strings.
         output = output.replace("\\\"", "\"");
