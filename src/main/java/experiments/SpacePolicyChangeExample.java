@@ -1,6 +1,7 @@
 package experiments;
 
 import LRMv2.LRM_dynamic_schema;
+import LRMv2.LRM_static_schema;
 import entities.*;
 import models.AbstractModel;
 import org.apache.jena.datatypes.xsd.XSDDatatype;
@@ -24,7 +25,6 @@ import static java.time.format.DateTimeFormatter.*;
  *
  */
 public class SpacePolicyChangeExample extends Experiment {
-
     private static String SPINTEXT = "# baseURI: http://c102-086.cloud.gwdg.de/ns/spinrules\n" +
             "# imports: http://c102-086.cloud.gwdg.de/ns/DEM-Scenario#\n" +
             "# imports: http://spinrdf.org/spl\n" +
@@ -299,19 +299,50 @@ public class SpacePolicyChangeExample extends Experiment {
         Statement spin = scenario.ontology.getModel().createStatement(demScenario, spinImports, spinURL);
         scenario.ontology.getModel().add(spin);
 
+
+
         // Entities EUMETSAT
         dataFormatPolicy = new Policy(scenario, "Data Format");
-        dataFormatPolicy.addStatement("Data Format must be HDF.");
+        PolicyStatement hdfStatement = new PolicyStatement(scenario, "DataInHDF");
+        hdfStatement.addProperty(LRM_static_schema.definition, "Data Format must be HDF.");
+        hdfStatement.isStatementOf(dataFormatPolicy);
+
         dataReleasePolicy = new Policy(scenario, "Release date policy");
         dataReleasePolicy.addComment("Data available to general public after X time");
-        dataReleasePolicy.addStatement("Meteosat Data and Derived Products older than 24 hours are distributed on request from the EUMETSAT Data Archive in digital " +
+        PolicyStatement dataReleaseStatement = new PolicyStatement(scenario, "Meteosat_24h");
+        dataReleaseStatement.addProperty(LRM_static_schema.definition, "Meteosat Data and Derived Products older than 24 hours are distributed on request from the EUMETSAT Data Archive in digital " +
                 "and graphical form via the associated operational service in formats which represent both full and partial spatial coverage as well as both full " +
-                "and partial spatial resolution", "Natural language","en.uk");
-        dataReleasePolicy.addStatement("Meteosat Data and Derived Products older than (time_before_release) hours are distributed on request [...] as both full and partial spatial resolution","Natural Language", "en/uk");
-        dataReleasePolicy.addStatement(SPINTEXT, "SPIN");// TODO: add SPIN rule here
+                "and partial spatial resolution.");
+
+        dataReleaseStatement.language("Natural language");
+        dataReleaseStatement.format("en.uk");
+        dataReleaseStatement.isStatementOf(dataReleasePolicy);
+
+        //dataReleasePolicy.addStatement("Meteosat Data and Derived Products older than 24 hours are distributed on request from the EUMETSAT Data Archive in digital " +
+        //        "and graphical form via the associated operational service in formats which represent both full and partial spatial coverage as well as both full " +
+        //        "and partial spatial resolution", "Natural language","en.uk");
+        PolicyStatement dataReleaseStatementGeneral = new PolicyStatement(scenario, "Meteosat_General");
+        dataReleaseStatementGeneral.addProperty(LRM_static_schema.definition, "Meteosat Data and Derived Products older than (time_before_release) hours are distributed on request [...] as both full and partial spatial resolution");
+        dataReleaseStatementGeneral.language("Natural language");
+        dataReleaseStatementGeneral.format("en/uk");
+        dataReleaseStatementGeneral.isStatementOf(dataReleasePolicy);
+
+
+        //dataReleasePolicy.addStatement("Meteosat Data and Derived Products older than (time_before_release) hours are distributed on request [...] as both full and partial spatial resolution","Natural Language", "en/uk");
+        //dataReleasePolicy.addStatement(SPINTEXT, "SPIN");
+
+        PolicyStatement dataReleaseSPIN = new PolicyStatement(scenario, "SPIN_RULE");
+        dataReleaseSPIN.language("SPIN");
+        dataReleaseSPIN.addProperty(LRM_static_schema.definition, SPINTEXT);
+        dataReleaseSPIN.isStatementOf(dataReleasePolicy);
+
         dataReleasePolicy.hasRequirementsLevel(RequirementLevel.ReqLevel.MUST);
         dataReleasePolicy.hasType(Policy.TypeOfPolicy.MANDATORY);
         dataReleasePolicy.addProperty(dataReleasePolicy.getOntModel().createOntProperty(dataReleasePolicy.getURI()+ AbstractModel.sanitizeName("time_before_release")),"24");
+
+
+
+
         webPortal = new ServiceInterface(scenario, "EUMETSAT Web Portal");
         seviriImages = new DigitalObject(scenario, "SEVIRI Images");
 
