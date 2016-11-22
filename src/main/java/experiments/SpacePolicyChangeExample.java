@@ -48,13 +48,13 @@ public class SpacePolicyChangeExample extends Experiment {
             "            sp:object [\n" +
             "                sp:varName \"delta\" ;\n" +
             "              ] ;\n" +
-            "            sp:predicate <http://www.pericles-project.eu/ns/LRM#changedBy> ;\n" +
+            "            sp:predicate <http://xrce.xerox.com/LRM#changedBy> ;\n" +
             "            sp:subject [\n" +
             "                sp:varName \"resource\" ;\n" +
             "              ] ;\n" +
             "          ]\n" +
             "          [\n" +
-            "            sp:object <http://www.pericles-project.eu/ns/LRM#RDF-Delta> ;\n" +
+            "            sp:object <http://xrce.xerox.com/LRM#RDF-Delta> ;\n" +
             "            sp:predicate rdf:type ;\n" +
             "            sp:subject [\n" +
             "                sp:varName \"delta\" ;\n" +
@@ -64,7 +64,7 @@ public class SpacePolicyChangeExample extends Experiment {
             "            sp:object [\n" +
             "                sp:varName \"deletion_statement\" ;\n" +
             "              ] ;\n" +
-            "            sp:predicate <http://www.pericles-project.eu/ns/LRM#deletion> ;\n" +
+            "            sp:predicate <http://xrce.xerox.com/LRM#deletion> ;\n" +
             "            sp:subject [\n" +
             "                sp:varName \"delta\" ;\n" +
             "              ] ;\n" +
@@ -73,7 +73,7 @@ public class SpacePolicyChangeExample extends Experiment {
             "            sp:object [\n" +
             "                sp:varName \"insertion_statement\" ;\n" +
             "              ] ;\n" +
-            "            sp:predicate <http://www.pericles-project.eu/ns/LRM#insertion> ;\n" +
+            "            sp:predicate <http://xrce.xerox.com/LRM#insertion> ;\n" +
             "            sp:subject [\n" +
             "                sp:varName \"delta\" ;\n" +
             "              ] ;\n" +
@@ -370,7 +370,7 @@ public class SpacePolicyChangeExample extends Experiment {
         ZonedDateTime creationDate = ZonedDateTime.ofInstant(new Date().toInstant(), ZoneId.of("UTC"));
         DateTimeFormatter DATEFORMAT = ofPattern("yyyy-MM-dd'T'HH:mm:ssX");
 
-        int n=1;
+        int n=0;
         DigitalObject dummy1 = new DigitalObject(scenario, "SEVIRI Image "+n++);
         dummy1.hasPath("https://141.5.100.67/api/cdmi/eumetsatdata/SEVRIImage"+n+".jpg");
         dummy1.partOf(seviriImages);
