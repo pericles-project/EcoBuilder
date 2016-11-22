@@ -372,14 +372,14 @@ public class SpacePolicyChangeExample extends Experiment {
 
         int n=1;
         DigitalObject dummy1 = new DigitalObject(scenario, "SEVIRI Image "+n++);
-        dummy1.hasPath("eumetsatdata/SEVRIImage"+n+".jpg");
+        dummy1.hasPath("https://141.5.100.67/api/cdmi/eumetsatdata/SEVRIImage"+n+".jpg");
         dummy1.partOf(seviriImages);
         dummy1.addProperty(releaseState, "private");
         dummy1.addProperty(dateCreated, ResourceFactory.createTypedLiteral(creationDate.format(DATEFORMAT), XSDDatatype.XSDdateTime));
 
         creationDate=creationDate.plusHours(2);
         DigitalObject dummy2 = new DigitalObject(scenario, "SEVIRI Image "+n++);
-        dummy2.hasPath("eumetsatdata/SEVRIImage"+n+".jpg");
+        dummy2.hasPath("https://141.5.100.67/api/cdmi/eumetsatdata/SEVRIImage"+n+".jpg");
         dummy2.partOf(seviriImages);
         dummy2.addProperty(releaseState, "private");
         dummy2.addProperty(dateCreated, ResourceFactory.createTypedLiteral(creationDate.format(DATEFORMAT), XSDDatatype.XSDdateTime));
@@ -387,13 +387,13 @@ public class SpacePolicyChangeExample extends Experiment {
 
 
         DigitalObject dummy3 = new DigitalObject(scenario, "SEVIRI Image "+n++);
-        dummy3.hasPath("eumetsatdata/SEVRIImage"+n+".jpg");
+        dummy3.hasPath("https://141.5.100.67/api/cdmi/eumetsatdata/SEVRIImage"+n+".jpg");
         dummy3.addProperty(releaseState, "public");
         dummy3.addProperty(dateCreated, ResourceFactory.createTypedLiteral(creationDate.format(DATEFORMAT), XSDDatatype.XSDdateTime));
         creationDate=creationDate.plusHours(2);
 
         DigitalObject dummy4 = new DigitalObject(scenario, "SEVIRI Image "+n++);
-        dummy4.hasPath("eumetsatdata/SEVRIImage"+n+".jpg");
+        dummy4.hasPath("https://141.5.100.67/api/cdmi/eumetsatdata/SEVRIImage"+n+".jpg");
         dummy4.addProperty(releaseState, "public");
         dummy4.addProperty(dateCreated, ResourceFactory.createTypedLiteral(creationDate.format(DATEFORMAT), XSDDatatype.XSDdateTime));
 
