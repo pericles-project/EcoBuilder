@@ -388,7 +388,7 @@ public class SpacePolicyChangeExample extends Experiment {
         n++;
 
 
-        DigitalObject dummy3 = new DigitalObject(scenario, "SEVIRI Image "+n++);
+        DigitalObject dummy3 = new DigitalObject(scenario, "SEVIRI Image "+n);
         dummy3.hasPath("https://141.5.100.67/api/cdmi/eumetsatdata/SEVRIImage"+n+".jpg");
         dummy3.partOf(seviriImages);
         dummy3.addProperty(releaseState, "public");
@@ -397,7 +397,7 @@ public class SpacePolicyChangeExample extends Experiment {
         n++;
 
 
-        DigitalObject dummy4 = new DigitalObject(scenario, "SEVIRI Image "+n++);
+        DigitalObject dummy4 = new DigitalObject(scenario, "SEVIRI Image "+n);
         dummy4.hasPath("https://141.5.100.67/api/cdmi/eumetsatdata/SEVRIImage"+n+".jpg");
         dummy4.partOf(seviriImages);
         dummy4.addProperty(releaseState, "public");
