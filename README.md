@@ -1,23 +1,24 @@
 # EcoBuilder
-The EcoBuilder is a tool for the creation of Digital Ecosystem Models via Java API or via GUI.
 
-The Digital Ecosystem Model and the first version of the EcoBuilder were released on 30th September 2016.
+The EcoBuilder is a tool for the creation of [Digital Ecosystem Models (DEM)](https://github.com/pericles-project/DEM) via Java API or via GUI. The Digital Ecosystem Model is an OWL ontology for modelling Digital Ecosystems consisting of Technical Services, Processes, Digital Objects, Policies and User Communities.
 
-We will add further information here, including a quick start guide and a developer documentation in the following week.
+The [Digital Ecosystem Model](https://github.com/pericles-project/DEM) and the first version of the EcoBuilder have been released on the 30th September 2016.
 
-We plan to publish two succeeding versions of the EcoBuilder this year. Version 1.1 will be published end of October before MEDES conference, where we will present a paper about the DEM and the EcoBuilder. Version 1.2 will be released end of November, just before the PERICLES final event in London. 
+Version 1.1 has been released by the end of October before MEDES conference, where have presented a paper about the DEM and the EcoBuilder. 
 
 Please note that EcoBuilder projects saved using version 1.0 will probably not be loadable in the succeeding versions.
 
 Help us to improve the EcoBuilder, and create tickets ("Issues section"), if you have any suggestion for improvements, or if you find any bugs. We will try to process your feedback for the new versions.
 
-The EcoBuilder was developed on Linux. It was tested on Windows, but not very extensively. We have not tested it on Mac, yet.
+The EcoBuilder was developed on Linux. It was tested on Windows and Mac, but not very extensively. 
 
 The execution of the EcoBuilder "jar" file requires installed Java 8.
 
+![EcoBuilder Screenshot](https://raw.githubusercontent.com/pericles-project/EcoBuilder/master/ghimages/EcoBuilder.png)
+
 ## Links
 
-* [PERICLES Homepage] (http://www.pericles-project.eu/)
+* [PERICLES Homepage](http://www.pericles-project.eu/)
 
 # Credits
 
