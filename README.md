@@ -16,6 +16,12 @@ The execution of the EcoBuilder "jar" file requires installed Java 8.
 
 ![EcoBuilder Screenshot](https://raw.githubusercontent.com/pericles-project/EcoBuilder/master/ghimages/EcoBuilder.png)
 
+## Screencast
+
+The following screencast shows the basic usage of the tool. It also gives a quick introduction about the Digital Ecosystem Model. 
+
+[![EcoBuilder Screencast](https://raw.githubusercontent.com/pericles-project/EcoBuilder/master/ghimages/screencast.png)](https://vimeo.com/210918026)
+
 ## Links
 
 * [PERICLES Homepage](http://www.pericles-project.eu/)
